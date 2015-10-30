@@ -1,0 +1,21 @@
+# -*- sh -*-
+a='123456789'
+b='12345'
+
+if (( ${#a} > ${#b} ))
+then
+    echo 'len a > len b'
+fi
+
+if [[ "$a" == "$b"* ]]
+then
+    echo a contains b, a starts with b
+fi
+
+## fullsrc is a full path to a file under your current dir
+## this strips off the path up to and including the current dir
+$ fullsrc=/home/mpersico5/personal/dotfiles/makesymlinks
+$ pwd
+/home/mpersico5/personal/dotfiles
+$ echo ${fullsrc##$(pwd)/}
+makesymlinks

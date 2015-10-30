@@ -1,0 +1,6 @@
+declare -a x
+x=($*)
+for i in ${x[*]}
+do
+echo $i
+done

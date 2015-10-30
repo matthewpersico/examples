@@ -1,0 +1,7 @@
+stat --format=%Y $file ##  %Y   time of last modification, seconds since Epoch
+date +%s              ##  $s   now, in seconds since the Epoch
+
+if [ `stat --format=%Y $file` -le $(( `date +%s` - 60*30 )) ]; then
+    do stuff with your 30-minutes-old-or-older $file
+fi
+

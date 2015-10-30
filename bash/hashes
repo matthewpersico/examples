@@ -1,0 +1,9 @@
+# -*- sh -*-
+declare -A dotfiles
+dotfiles[profile.mpersico5]=$HOME/.profile.mpersico5
+dotfiles[bash_profile]=$HOME/.bash_profile
+
+for k in ${!dotfiles[@]}
+do
+    echo $k=${dotfiles[$k]}
+done

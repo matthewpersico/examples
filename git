@@ -1,0 +1,16 @@
+Fetch a branch from a fork:
+
+## Clone the master
+git clone bbgithub:dpkg/builddeb
+cd builddeb/
+
+## Add the fork.
+## arb. fork name---+ +---forked repo
+##                  V V
+git remote add druoso bbgithub:druoso/builddeb
+
+## Fetch the fork.
+git fetch druoso
+
+## Create a local branch to mirror the branch in the fork. You don't "suck
+down" the branch.  git checkout -b use-opt-bb druoso/use-opt-bb

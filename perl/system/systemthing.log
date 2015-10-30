@@ -1,0 +1,14 @@
+--- In systemthing.pl ---
+at Mon Sep 28 13:35:10 2015
+arguments:
+foo bar
+INC
+/tmp
+/home/mpersico5/personal/share/perl5/site_perl/5.16
+/bb/util/common/perlmod/lib/site_perl
+/opt/bb/lib64/perl5/site_perl/5.16
+/opt/bb/share/perl5/site_perl/5.16
+/opt/bb/lib64/perl5/5.16.3
+/opt/bb/share/perl5/5.16.3
+.
+--- END systemthing.pl ---
