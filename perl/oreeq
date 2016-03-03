@@ -1,0 +1,13 @@
+# -*- cperl -*-
+use strict;
+use warnings;
+
+my $tmp;
+
+sub tempdir {
+    42
+}
+
+my $tgtdir = ( $tmp ||= tempdir() );
+$tgtdir = ( $tmp ||= tempdir() );
+my $dummy = 6;

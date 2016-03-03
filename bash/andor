@@ -1,0 +1,73 @@
+## -*- sh -*-
+func_ret_0 ()
+{
+    return 0
+}
+
+func_ret_1 ()
+{
+    return 1
+}
+
+func_ret_2 ()
+{
+    return 2
+}
+
+func_ret_0 && echo 'func_ret_0 && echo...'
+func_ret_0 || echo 'func_ret_0 || echo...'
+func_ret_0
+if [ "$?" = '0' ]
+then
+    echo 'func_ret_0 $? == 0'
+else
+    echo 'func_ret_0 $? != 0'
+fi
+
+func_ret_1 && echo 'func_ret_1 && echo...'
+func_ret_1 || echo 'func_ret_1 || echo...'
+func_ret_1
+if [ "$?" = '0' ]
+then
+    echo 'func_ret_1 $? == 0'
+else
+    echo 'func_ret_1 $? != 0'
+fi
+
+func_ret_2 && echo 'func_ret_2 && echo...'
+func_ret_2 || echo 'func_ret_2 || echo...'
+func_ret_2
+if [ "$?" = '0' ]
+then
+    echo 'func_ret_2 $? == 0'
+else
+    echo 'func_ret_2 $? != 0'
+fi
+
+func_ret_0 && func_ret_0 && echo ' 1 - func_ret_0 && func_ret_0 && echo...'
+func_ret_0 || func_ret_0 && echo ' 2 - func_ret_0 || func_ret_0 && echo...'
+
+func_ret_0 && func_ret_1 && echo ' 3 - func_ret_0 && func_ret_1 && echo...'
+func_ret_0 || func_ret_1 && echo ' 4 - func_ret_0 || func_ret_1 && echo...'
+
+func_ret_1 && func_ret_0 && echo ' 5 - func_ret_1 && func_ret_0 && echo...'
+func_ret_1 || func_ret_0 && echo ' 6 - func_ret_1 || func_ret_0 && echo...'
+
+func_ret_1 && func_ret_1 && echo ' 7 - func_ret_1 && func_ret_1 && echo...'
+func_ret_1 || func_ret_1 && echo ' 8 - func_ret_1 || func_ret_1 && echo...'
+
+func_pass ()
+{
+    func_ret_0; (( $? != 0 )) && echo "func did not return 0, bad" && return 1
+    echo "got here"
+    return 0
+}
+
+func_fail ()
+{
+    func_ret_1; (( $? != 0 )) && echo "func did not return 0, bad" && return 1
+    echo "got here"
+    return 0
+}
+
+func_fail echo "func_fail \$\? = $?"  func_pass echo "func_pass \$\? = $?"

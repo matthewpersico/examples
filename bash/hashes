@@ -2,8 +2,14 @@
 declare -A dotfiles
 dotfiles[profile.mpersico5]=$HOME/.profile.mpersico5
 dotfiles[bash_profile]=$HOME/.bash_profile
+someother=foobar
 
-for k in ${!dotfiles[@]}
-do
-    echo $k=${dotfiles[$k]}
-done
+hashes_show ()
+{
+    for k in ${!dotfiles[@]}
+    do
+        echo $k=${dotfiles[$k]}
+    done
+
+    echo someother is $someother
+}

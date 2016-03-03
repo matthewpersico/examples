@@ -1,0 +1,22 @@
+# -*- cperl -*-
+use strict;
+use warnings;
+
+sub get_value {
+    return $_[0];
+}
+
+my $entry = 1;
+
+for my $v (1, '6', undef) {
+
+    if($entry && defined(get_value($v))) {
+        print "value '$v' was defined\n";
+    } else {
+        print "value was not defined\n";
+    }
+    my $return_with_warn = 0 + get_value($v);
+    my $return_ok = 0 + (get_value($v) || 0);
+    print "return_with_warn = '$return_with_warn'\n";
+    print "return_ok = $return_ok\n\n";
+}
