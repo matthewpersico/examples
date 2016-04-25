@@ -13,8 +13,17 @@ BEGIN { ($RealBin) = ( $RealBin =~ /^(.+)$/ ) }
 
 ## 2) We remove ourselves from %INC
 my $iam='testlib/RealPackage.pm';
-my $delkey = grep { $INC{$_} =~ m|$iam|} keys %INC;
-delete $INC{$delkey};
+print("This is \%INC() in $iam before monkeying around\n",
+          Data::Dumper->Dump([\%INC], [qw(*INC)]), "\n");
+
+my @delkey = grep { $INC{$_} =~ m|$iam|} keys %INC;
+my $uninc = $INC{$delkey[0]};
+$uninc =~ s|/$iam||;
+ print "\n--$uninc--\n";
+delete $INC{$delkey[0]};
+
+print("This is \%INC() in $iam after monkeying around\n",
+          Data::Dumper->Dump([\%INC], [qw(*INC)]), "\n");
 
 ## 3) We load up the real RealPackage.
 require "$RealBin/lib/RealPackage.pm";
@@ -25,12 +34,12 @@ require "$RealBin/lib/RealPackage.pm";
 
     eval q(sub RealPackage::check {
     print("This is check() in $iam\n",
-          Data::Dumper->Dump([\%INC], [qw(*INC)]), "\n",
-          incis());
+          Data::Dumper->Dump([\%INC], [qw(*INC)]), "\n");
+    incis();
     });
 }
 
-## We are monkeyu-patched. This is all thwarted if the script in which we use
+## We are monkey-patched. This is all thwarted if the script in which we use
 ## RealPackage has a 'use lib' statement that points to the real location; that
 ## statement will force the real location into @INC before the fake location.
-1;
+6;

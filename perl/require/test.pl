@@ -15,6 +15,7 @@ my $iam = 'test.pl';
 ## 3) Build PERL5LIB to reflect our desired state and put it in the environment
 ## so that it is seen by the system() call.
 my $oldp5l = $ENV{PERL5LIB};
+
 $ENV{PERL5LIB} = join(':',
                       map { rel2abs($_) } @INC);
 $ENV{PERL5LIB} = join(':',
@@ -28,7 +29,7 @@ print "** $iam:\$ENV{PERL5LIB}=$ENV{PERL5LIB}\n\n";
 ##    use lib 'lib'
 ## statement puts the real dir before the monkeypactched dir internally. Which
 ## is why I prefer PERL5LIB to "use lib".
-##system("./real_with_lib.pl");
+system("./real_with_lib.pl");
 
 ## This one should reflect our monkey-patched version.
 system("./real_without_lib.pl");
