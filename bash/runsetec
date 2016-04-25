@@ -1,0 +1,1 @@
+for i in $(./setec 6) $(./setec 3) $(./setec 42); do echo "$? - $i";done

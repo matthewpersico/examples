@@ -1,0 +1,7 @@
+showem ()
+{
+	set | grep -E 'BASH_LINENO|BASH_SOURCE|FUNCNAME' | grep -v set >&2
+}
+
+showem
+set | grep -E 'BASH_LINENO|BASH_SOURCE|FUNCNAME' | grep -v set >&2
