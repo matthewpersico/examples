@@ -12,6 +12,12 @@ then
     echo a contains b, a starts with b
 fi
 
+arg_repl_test ()
+{
+    echo ${1:-sdfsfds}
+}
+
+
 ## fullsrc is a full path to a file under your current dir
 ## this strips off the path up to and including the current dir
 $ fullsrc=/home/mpersico5/personal/dotfiles/makesymlinks
