@@ -1,3 +1,4 @@
+# -*- sh -*-
 showem ()
 {
 	set | grep -E 'BASH_LINENO|BASH_SOURCE|FUNCNAME' | grep -v set >&2
@@ -5,3 +6,26 @@ showem ()
 
 showem
 set | grep -E 'BASH_LINENO|BASH_SOURCE|FUNCNAME' | grep -v set >&2
+
+
+guts_func ()
+{
+    echo in guts_func, caller is ${FUNCNAME[1]}
+    local iam=${FUNCNAME[0]}
+    if [ -n "${FUNCNAME[1]}" ] && \
+           [ ! "${FUNCNAME[1]}" = 'source' ] && \
+           [ ! "${FUNCNAME[1]}" = 'main' ]
+    then
+        iam="${FUNCNAME[1]}"
+    fi
+    echo "'iam' is '$iam'"
+}
+
+wrap_func ()
+{
+    local echo
+    guts_func
+}
+
+guts_func
+wrap_func

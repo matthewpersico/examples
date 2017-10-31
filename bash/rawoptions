@@ -1,0 +1,83 @@
+## -*- sh -*-
+
+##
+
+## A simple way of processing options, using bash regexp extensions. "simple"
+## means:
+
+## No ganging. -foo will not be processed as -f -o -o
+
+## All dashed options must appear before arguments. The first non dashed
+## argument ends op processing.
+
+## --foo=junk will not be accepted. Use --foo junk.
+
+declare moreopts
+moreopts=1
+declare verbose
+verbose=0
+while [[ "$1" =~ ^- ]] && ((moreopts))
+do
+    ## Strip all leading dashes here so that -foo and --foo can both
+    ## be processed as 'foo'.
+    declare original="$1"
+    declare option="$1"
+    declare new=''
+    while [ ! "$new" = "$option" ] && [ ! "$option" = '--' ]
+    do
+        new=$option
+        option=${option##-}
+    done
+    shift ## That way you avoid endless loops on invalid options. NOTE: If you
+          ## are converting an existing case of options, make sure that your
+          ## shifts are correct with the new logic. In particular, remove any
+          ## explicit shifts of the option arg in the case statement, as we
+          ## take care of that with this shift.
+
+    case $option in
+        f | foo )
+            ## Process the option.
+
+            ## If we expect the option to have an argument, it is now in $1,
+            ## due to the shift above.
+
+            ## Error conditions we can check for are:
+
+            ## If $1 is empty.
+            ##     [ -z "$1" ] && echo "Missing arg for option $option" && exit 1;
+
+            ## If $2 has a leading -, that means it's the next option, unless
+            ## you're pathological.
+            ##     [[ "$1" =~ ^- ]] echo "Missing arg for option $option" && exit 1;
+
+            ## What we cannot check for is if $1 is really a script argument
+            ## and not the option argument. If that's a problem, step up to a
+            ## real getopt OR religiously use -- at all option ends. That this
+            ## condition would be caught as a consequence of the "leading -
+            ## check" above.
+
+            ## shift, if expecting an arg for this option
+            ;;
+
+        ## ... more options ...
+
+        ## standard options
+        help )
+            ## Say something here.
+            exit 0
+            ;;
+        debug | -x )
+            set -x
+            ;;
+        verbose | v )
+            ## Either a yes/no:             verbose=1;;
+            ## or a level     :             verbose=$1; shift ;;
+        --)
+            moreopts=0
+            ;;
+        * )
+            echo "$original is an invalid option. See $0 --help"; exit 1;;
+        esac
+    done
+
+## Continue on with anything left in "$@"

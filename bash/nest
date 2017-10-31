@@ -1,0 +1,26 @@
+#!/opt/bb/bin/bash
+
+func_a ()
+{
+    [ "$SET_X" = ${FUNCNAME[0]} ] && set -x
+    echo this is func a
+    [ "$SET_X" = ${FUNCNAME[0]} ] && set +x
+}
+
+func_b ()
+{
+    [ "$SET_X" = ${FUNCNAME[0]} ] && set -x
+    echo this is func b
+    echo calling func a
+    func_a
+    [ "$SET_X" = ${FUNCNAME[0]} ] && set +x
+}
+
+func_c ()
+{
+    [ "$SET_X" = ${FUNCNAME[0]} ] && set -x
+    echo this is func c
+    echo calling func b
+    func_b
+    [ "$SET_X" = ${FUNCNAME[0]} ] && set +x
+}

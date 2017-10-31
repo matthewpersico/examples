@@ -1,0 +1,8 @@
+inplace ()
+{
+   echo called inplace function with args "$@"
+}
+
+echo called inplace script with args "$@", then shifted on off
+shift
+inplace "$@"

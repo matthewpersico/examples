@@ -1,0 +1,29 @@
+# -*- sh -*-
+
+top_level_var='top_level_var'
+
+func1 ()
+{
+    local func1_var='func1_var'
+    echo "$FUNCNAME: top_level_var='$top_level_var'"
+    echo "$FUNCNAME: func1_var='$func1_var'"
+    echo "$FUNCNAME: ${FUNCNAME[*]} (${#FUNCNAME[@]})"
+    local idx=${#FUNCNAME[@]};((idx-=1))
+    echo "$FUNCNAME: Topmost = ${FUNCNAME[$idx]}"
+
+    top_level_var='changed in func1'
+    func2
+}
+
+func2 ()
+{
+    local func2_var='func2_var'
+    echo "$FUNCNAME: top_level_var='$top_level_var'"
+    echo "$FUNCNAME: func1_var='$func1_var'"
+    echo "$FUNCNAME: func2_var='$func2_var'"
+    echo "$FUNCNAME: ${FUNCNAME[*]} (${#FUNCNAME[@]})"
+    local idx=${#FUNCNAME[@]};((idx-=1))
+    echo "$FUNCNAME: Topmost = ${FUNCNAME[$idx]}"
+}
+
+func1

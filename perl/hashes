@@ -1,0 +1,32 @@
+## -*- cperl -*-
+
+use strict;
+use warnings;
+use Data::Dumper;
+
+my %seen;
+my %tgt;
+
+%tgt = (a => 1,
+        b => 2,
+        c => 3);
+%seen = ( a => 6,
+          b => 14);
+@tgt{keys %seen} = @tgt{keys %seen};
+print Data::Dumper->Dump([\%tgt, \%seen],
+                         [qw(*tgt *seen)]);
+%tgt = map { $_ => $tgt{$_} } keys %seen;
+print Data::Dumper->Dump([\%tgt, \%seen],
+                         [qw(*tgt *seen)]);
+
+
+%tgt = (a => 1,
+        b => 2,
+        c => 3);
+%seen = ();
+@tgt{keys %seen} = @tgt{keys %seen};
+print Data::Dumper->Dump([\%tgt, \%seen],
+                         [qw(*tgt *seen)]);
+%tgt = map { $_ => $tgt{$_} } keys %seen;
+print Data::Dumper->Dump([\%tgt, \%seen],
+                         [qw(*tgt *seen)]);

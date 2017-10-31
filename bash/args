@@ -1,0 +1,58 @@
+#!/bin/bash
+
+if [ -z "$1" ]
+then
+    echo 'Call this script with at least one of each of the following for best results:'
+    echo 'An unquoted arg'
+    echo 'A quoted arg containing a space'
+    exit
+fi
+
+echo
+echo "Dollar star is" $*
+for i in $*
+do
+    echo arg: $i
+done
+
+echo
+echo "Dollar at is" $@
+for i in $@
+do
+    echo arg: $i
+done
+
+echo
+echo "Quoted dollar star is $*"
+for i in "$*"
+do
+    echo arg: $i
+done
+
+echo
+echo "Quoted dollar at is $@"
+for i in "$@"
+do
+    echo arg: $i
+done
+
+echo "Dollar 1 is '"$1"'"
+echo "Dollar 2 is '"$2"'"
+
+outer ()
+{
+    echo "outer: \$1 = '$1' and \$2 = '$2'"
+    echo inner "with two args"
+    inner $1 $2
+    echo inner "with one arg"
+    inner $1
+    echo inner "with no args"
+    inner
+}
+
+inner ()
+{
+    echo "inner: \$1 = '$1' and \$2 = '$2'"
+}
+
+outer $1 $2

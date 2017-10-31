@@ -25,3 +25,29 @@ $ pwd
 /home/mpersico5/personal/dotfiles
 $ echo ${fullsrc##$(pwd)/}
 makesymlinks
+
+WAYNE IRONS
+12:33:45 I don't even know what these {} % ## operations are called to try to LMGTFY myself.
+CHARLES BAILEY
+12:33:57 So, you can do something like:
+prefix=${YEAR%????}
+PERIOD=${YEAR#$prefix}
+MICHAEL YAGLIYAN
+12:34:02 oh ok, i can explain
+12:34:05 that's the same in bash
+12:34:29 there's a really easy mnemonic to understand what those do.  on your keyboard to the left of $ is #, to the right of $ is %
+12:34:40 # removes the pattern from the left, % removes from the right
+12:34:48 ## is greedy, as is %%
+CHARLES BAILEY
+12:35:01 So prefix is YEAR with the last four characters deleted, then PERIOD is YEAR with the prefix removed.
+MICHAEL YAGLIYAN
+12:35:44 and the pattern is basically a globbing pattern, so literal text, plus * for >=0 characters, and ? for 1 character
+12:36:01 so when i said greedy, that basically affects the interpretation of *
+12:36:07 gotta run
+12:36:13 good luck
+WAYNE IRONS
+12:36:47 Thanks, all. I'll see if I can experiment, and also try to sort out why some of the cases of this thing do actually work.
+JEREMY DEVENPORT
+12:37:46 Google keyword is "ksh parameter substitution" (it's under "parameter expansion" in the posix shell language reference)
+WAYNE IRONS
+12:38:48 Thanks Jeremy.

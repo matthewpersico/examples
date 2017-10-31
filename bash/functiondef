@@ -1,0 +1,8 @@
+#!/opt/bb/bin/bash
+
+functiondefs_check ()
+{
+echo "this func as defined in functiondef"
+}
+
+. ./functionuse

@@ -4,8 +4,43 @@ my %h=(1,2,3,4,5,6);
 
 my $h={1,2,3,4,5,6,7,8,9,10};
 
+print "@{$h}{qw(1 5)}\n";
+
 my $hslice=map{$_, $h->{$_}} qw(1 3 7 );
 
 use Data::Dumper;
 
 print Data::Dumper->Dump([$hslice],[qw(*hslice)]);
+
+sub castit {
+    my @foo = (1,2,3);
+    print "castit sees wantarray ";
+    if(wantarray) {
+        print "true\n";
+        return @foo;
+    } else {
+        print "false\n";
+        return \@foo;
+    }
+}
+
+print "my $t1 = castit() - ";
+my $t1 = castit();
+
+
+print "my @t2 = castit() - ";
+my @t2 = castit();
+
+print "my @t3 = map { $_ } @{castit()} - ";
+my @t3 = map { $_ } @{castit()};
+
+my $h = { type => 'foo'};
+
+sub resetit {
+    my ($h) = @_;
+    $h->{type}= 'bar';
+}
+
+resetit($h);
+
+print "$h->{type} \n";

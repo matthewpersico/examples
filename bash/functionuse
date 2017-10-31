@@ -1,0 +1,5 @@
+## -*- sh -*-
+
+functiondefs_check
+
+exit 1

@@ -1,0 +1,22 @@
+#!/bin/bash
+
+bbgithub-test ()
+{
+    echo "I am bbgithub-test with args $@";
+}
+
+github-test ()
+{
+    echo "I am github-test with args $@";
+}
+
+proto='bbgithub'
+
+${proto}-test 1 2 3
+
+var='foobar'
+
+eval ${!var}="$(ls -rt)"
+
+echo $foobar
+echo ${!var}

@@ -1,0 +1,29 @@
+afunc ()
+{
+    trap "echo '%%%%%func trap'" SIGINT
+    sleep 10
+}
+
+trap "echo '!!!!!trap 1'" SIGINT
+
+echo trap set, sleeping 10
+
+sleep 10
+
+echo calling afunc
+
+afunc
+
+trap "echo '----trap 2'" SIGINT
+
+echo trap reset, sleeping 10
+
+sleep 10
+
+echo calling afunc again
+
+afunc
+
+echo hmm, which trap here, sleeping 10
+
+sleep 10
