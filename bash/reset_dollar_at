@@ -1,0 +1,20 @@
+## -*- sh -*-
+
+declare moreopts=1
+declare -a ARGS
+echo "We start with $@"
+while [ -n "$1" ] && ((moreopts))
+do
+    if [[ "$1" =~ - ]]
+    then
+        echo $1 is an opt
+    else
+        echo $1 is an arg
+        ARGS+=("$1")
+    fi
+    shift
+done
+
+echo "Now we have $@, so lets reset"
+eval set -- "${ARGS[@]}"
+echo "After reset we have $@"

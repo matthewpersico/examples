@@ -1,0 +1,9 @@
+function cei ()
+{
+local default=${1:-${FUNCNAME[-1]}}
+ECHOAS=${ECHOAS:-${default}}
+[ -n "$1" ] && export ECHOAS
+return 0
+}
+
+export -f cei

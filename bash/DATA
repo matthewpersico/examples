@@ -1,0 +1,37 @@
+declare OPTSARGS
+OPTSARGS=$(getoptp -o wh --long nopager,help -n myScript-- "$@")
+status=$?
+if ((status != 0))
+then
+    printf '%s\n' "$(sed '0,/^__USAGE__$/d' $0)"
+    exit $status
+fi
+eval set -- "$OPTSARGS"
+while true
+do
+    case "$1" in
+        -w) diffargs="$diffargs -w"; shift;;
+        --nopager) pager=cat; shift;;
+        --) shift; break ;; ## end of opts, remaining $*, if any, are args
+        -h | --help)
+            printf '%s\n' "$(sed '0,/^__USAGE__$/d' $0)"
+            exit 0;;
+        *)
+            echo "Internal error!"
+            printf '%s\n' "$(sed '0,/^__USAGE__$/d' $0)"
+            exit 1;;
+   esac
+done
+
+...
+
+echo "Done"
+exit 0
+
+__USAGE__
+myScript [-w] [--nopager] [file [file...] ]
+
+Some description goes here.
+
+       -w - Do not compare whitespace
+--nopager - Do not pass the output through 'less'

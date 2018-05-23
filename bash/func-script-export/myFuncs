@@ -1,0 +1,52 @@
+## -*- sh -*-
+
+function fe()
+{
+    ce -f "${ECHOAS:-${FUNCNAME[-1]}}" "$@"
+}
+export -f fe
+
+function fen()
+{
+    echo "${ECHOAS:-${FUNCNAME[-1]}}"
+}
+export -f fen
+
+function se()
+{
+    ce -s "${ECHOAS:-$0}" "$@"
+}
+export -f se
+
+function ce ()
+{
+    declare printit
+    if [ "$1" = "-f" ]
+    then
+        printit=$2
+        shift;shift
+    else
+        printit="$(basename "$2")"
+        if [ -z "$ECHOAS" ]
+        then
+            ECHOAS=$printit
+            export ECHOAS
+        fi
+    fi
+
+    echo "***$printit>>> $*"
+}
+export -f ce
+
+function myFunc()
+{
+    fe "in ${FUNCNAME[0]}"
+    ECHOAS="$(fen)" ./myScript
+}
+export -f myFunc
+
+function myFunc2()
+{
+    fe "in ${FUNCNAME[0]}"
+}
+export -f myFunc2

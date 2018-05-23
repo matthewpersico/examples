@@ -1,0 +1,2 @@
+ce "ascr1 line 1, calling ./ascr2"
+./ascr2

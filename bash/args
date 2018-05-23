@@ -56,3 +56,6 @@ inner ()
 }
 
 outer $1 $2
+
+echo num args is $#
+echo last arg is ${@: -1}

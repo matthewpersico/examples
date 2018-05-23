@@ -30,3 +30,20 @@ print Data::Dumper->Dump([\%tgt, \%seen],
 %tgt = map { $_ => $tgt{$_} } keys %seen;
 print Data::Dumper->Dump([\%tgt, \%seen],
                          [qw(*tgt *seen)]);
+
+
+my @s = (
+          { uuid => 8 },  ## 0
+          { uuid => 10 }, ## 1
+          { uuid => 6 },  ## 2
+          { uuid => 12 }, ## 3
+          { uuid => 6 },
+          { uuid => 14 }, ## 5
+          { uuid => 8 },
+      );
+%seen = ();
+my @t = ( sort {$a->{uuid} <=> $b->{uuid} }
+            grep { (not $seen{$_->{uuid}}) and ($seen{$_->{uuid}}= $_) }
+            @s );
+print Data::Dumper->Dump([\@s, \@t],
+                     [qw(*s *t)]);

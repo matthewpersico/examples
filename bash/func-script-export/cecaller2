@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+. ./ce -i
+echo $0 after source CMD_ECHO_AS=$CMD_ECHO_AS
+
+./cecaller
+echo $0 after cecaller CMD_ECHO_AS=$CMD_ECHO_AS

@@ -1,0 +1,5 @@
+eval set -- "$GIT_PRE_COMMIT_HOOK_ARGS"
+for i in "$@"
+do
+echo $i
+done

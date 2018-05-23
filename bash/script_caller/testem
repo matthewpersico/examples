@@ -1,0 +1,24 @@
+echo "testem:in testem, FUNCNAME[-1]: '${FUNCNAME[-1]}'"
+echo -n "testem:in testem, dollarZero $0 vs bashsource ("
+for i in $(seq 1 ${#BASH_SOURCE[@]})
+do
+ii=$((i-1))
+echo -n " [$ii] ${BASH_SOURCE[$ii]}"
+done
+echo ' )'
+. ./funcs
+addpath -x -p PATH $(pwd)
+set | sort > $(basename $0).env
+scoping_func testem
+inner
+mv inner.env inner.nested1.env
+outer
+mv inner.env inner.nested2.env
+scoping_func testem
+echo -n "testem:in testem dollarZero $0 vs bashsource ("
+for i in $(seq 1 ${#BASH_SOURCE[@]})
+do
+ii=$((i-1))
+echo -n " [$ii] ${BASH_SOURCE[$ii]}"
+done
+echo ' )'

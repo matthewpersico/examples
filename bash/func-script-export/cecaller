@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+. ./ce -i
+echo $0 after source CMD_ECHO_AS=$CMD_ECHO_AS
+
+foo ()
+{
+    func-echo -i
+    echo in func CMD_ECHO_AS=$CMD_ECHO_AS
+}
+
+foo
+echo $0 after func CMD_ECHO_AS=$CMD_ECHO_AS

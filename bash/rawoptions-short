@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+
+### The short version:
+
+declare usage_cmd="[func|script]-usage"
+declare echo_cmd="[func|script]-echo"
+## If there's any chance that this will be in a script that will be dotted in,
+## remove the explicit out_cmd calls.
+declare out_cmd="[return|exit]"
+declare moreopts=1
+declare verbose=0
+while [[ "$1" =~ ^- ]] && ((moreopts))
+do
+    declare original="$1"
+    option=$(dashstripper "$original")
+    shift
+
+    case $option in
+        ## standard options
+        h | help )
+            $usage_cmd
+            $out_cmd 0
+            ;;
+        verbose | v )
+            #### A yes/no:
+            verbose=1
+            #### If a level, use instead:
+            #### [ -z "$ovalue" ] && ovalue=$1 && shift
+            ###  verbose="$ovalue"
+            ;;
+
+        ## Put your old option case entries in at this point.
+
+        --)
+            moreopts=0
+            ;;
+        * )
+            $echo_cmd "$original is an invalid option. See $0 --help"
+            $out_cmd 1
+            ;;
+    esac
+done
+
+## The End, to make sure we never eval the usage statement
+$out_cmd 0
+
+## Go grab the usage template the file USAGE

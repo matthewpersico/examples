@@ -1,0 +1,15 @@
+## -*- sh -*-
+
+set -e
+
+source $(dirname $0)/on-exit.binc
+
+gitroot=$(mktemp --tmpdir=/tmp -d 1381bucket.cron.XXXXXX)
+add_on_exit rm -rf $gitroot
+
+echo "hi there" > $gitroot/foobar
+
+echo ls -la $gitroot
+ oof
+
+echo bye

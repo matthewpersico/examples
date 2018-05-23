@@ -1,0 +1,8 @@
+. ./afun1
+. ./afun2
+. ./afun3
+chmod +x ascr1
+chmod +x ascr2
+chmod +x ascr3
+. ./ce
+. ./cei

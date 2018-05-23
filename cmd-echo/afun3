@@ -1,0 +1,8 @@
+## -*- sh -*-
+function afun3 ()
+{
+ce "afun3 line 1, calling ./ascr3"
+./ascr3
+}
+
+export -f afun3

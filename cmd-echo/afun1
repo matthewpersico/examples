@@ -1,0 +1,7 @@
+## -*- sh -*-
+function afun1 ()
+{
+    ce "afun1 line 1, calling afun2"
+    afun2
+}
+export -f afun1

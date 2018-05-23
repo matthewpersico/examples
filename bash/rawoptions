@@ -1,83 +1,207 @@
-## -*- sh -*-
+#!/usr/bin/env bash
 
-##
+### The short version:
 
-## A simple way of processing options, using bash regexp extensions. "simple"
-## means:
+declare moreopts=1
+declare verbose=0
+while [[ "$1" =~ ^- ]] && ((moreopts))
+do
+    declare original="$1"
+    option=$(dashstripper "$original")
+    shift
 
-## No ganging. -foo will not be processed as -f -o -o
+    case $option in
+        ## standard options
+        h | help )
+            [func|script]-usage
+            [return|exit] 0
+            ;;
+        debug | x )
+            set -x
+            if a script, trap 'set +x' EXIT
+            ;;
+        verbose | v )
+            #### A yes/no:
+            verbose=1
+            #### If a level, use instead:
+            #### [ -z "$ovalue" ] && ovalue=$1 && shift
+            ###  verbose="$ovalue"
+            ;;
 
-## All dashed options must appear before arguments. The first non dashed
-## argument ends op processing.
+        ## Put your old option case entries in at this point. Sample:
 
-## --foo=junk will not be accepted. Use --foo junk.
+        --)
+            moreopts=0
+            ;;
+        * )
+            [func|script]-echo -- "$original is an invalid option. See $0 --help"
+            [return|exit] if a script) 1
+            ;;
+    esac
+done
 
-declare moreopts
-moreopts=1
-declare verbose
-verbose=0
+## The End, to make sure we never eval the usage statement
+[return|exit] 0
+
+## Go grab the usage template the file USAGE
+
+################################################################################################
+#### The long version:
+#### A simple way of processing options, using bash regexp extensions. "simple"
+#### means:
+
+#### - No ganging. -foo will not be processed as -f -o -o
+
+#### - All dashed options must appear before arguments, by default. If you want
+####   to be able to process options anywhere on the command line, not just
+####   before all arguments, then see each line below with the tag
+####   "MIXED_OPTS_ARGS".
+
+declare optvaldelim='' #### If you are going to allow --foo a,b,c, then optvaldelim=','
+declare moreopts=1
+declare verbose=0
+
+#### MIXED_OPTS_ARGS - uncomment:
+#### declare -a ARGV
+
+#### MIXED_OPTS_ARGS - use this while loop instead:
+#### while [ -n "$1" ] && ((moreopts))
 while [[ "$1" =~ ^- ]] && ((moreopts))
 do
     ## Strip all leading dashes here so that -foo and --foo can both
     ## be processed as 'foo'.
     declare original="$1"
-    declare option="$1"
-    declare new=''
-    while [ ! "$new" = "$option" ] && [ ! "$option" = '--' ]
-    do
-        new=$option
-        option=${option##-}
-    done
-    shift ## That way you avoid endless loops on invalid options. NOTE: If you
-          ## are converting an existing case of options, make sure that your
-          ## shifts are correct with the new logic. In particular, remove any
-          ## explicit shifts of the option arg in the case statement, as we
-          ## take care of that with this shift.
+
+    ##### If you know you have dashstripper, you can just use it and avoid the
+    ##### if else tree.
+
+    ## See if we have or don't have the function and do the needful.
+    if type dashstripper 1>/dev/null 2>/dev/null
+    then
+        declare option
+        option=$(dashstripper "$original")
+    else
+        declare option="$1"
+        declare new=''
+        while [ ! "$new" = "$option" ] && [ ! "$option" = '--' ]
+        do
+            new=$option
+            option=${option##-}
+        done
+    fi
+    shift
+
+    #### MIXED_OPTS_ARGS - uncomment:
+    #### if [ "$option" = "$original" ]
+    #### then
+    ####    ## It's not an option, it's an arg
+    ####    ARGS+=("$1")
+    #### fi
+    ## This bit deals with --foo=bar instead of --foo bar
+    declare -a ovalues
+    declare okey=${option%%=*}
+    declare ovalue=${option#*=}
+    [ -n "$ovalue" ] && option="$okey"
+
+    #### NOTE: If you are converting an existing case of options, make sure
+    #### that your shifts below are correct with the new logic. In particular,
+    #### remove any explicit shifts of the option arg in the case statement, as
+    #### we take care of that with the shift above. Also, if your option takes
+    #### an argument, it will be in $ovalue, not $2.
 
     case $option in
-        f | foo )
-            ## Process the option.
-
-            ## If we expect the option to have an argument, it is now in $1,
-            ## due to the shift above.
-
-            ## Error conditions we can check for are:
-
-            ## If $1 is empty.
-            ##     [ -z "$1" ] && echo "Missing arg for option $option" && exit 1;
-
-            ## If $2 has a leading -, that means it's the next option, unless
-            ## you're pathological.
-            ##     [[ "$1" =~ ^- ]] echo "Missing arg for option $option" && exit 1;
-
-            ## What we cannot check for is if $1 is really a script argument
-            ## and not the option argument. If that's a problem, step up to a
-            ## real getopt OR religiously use -- at all option ends. That this
-            ## condition would be caught as a consequence of the "leading -
-            ## check" above.
-
-            ## shift, if expecting an arg for this option
-            ;;
-
-        ## ... more options ...
-
         ## standard options
-        help )
-            ## Say something here.
-            exit 0
+        h | help )
+            ;
+            ##[func|script]-usage
+            ##[return|exit] 0
             ;;
-        debug | -x )
+        debug | x )
             set -x
+            ##if a script, trap 'set +x' EXIT
             ;;
         verbose | v )
-            ## Either a yes/no:             verbose=1;;
-            ## or a level     :             verbose=$1; shift ;;
+            #### A yes/no:
+            verbose=1
+            #### If a level, use instead:
+            #### [ -z "$ovalue" ] && ovalue=$1 && shift
+            ###  verbose="$ovalue"
+            ;;
+
+        ## Put your old option case entries in at this point. Sample:
+
+        f | foo )
+            #### Process the option.
+
+            #### With no expected args to the option, just set a flag or do
+            #### some other code.
+
+            #### If we expect the option to have one or more arguments, those
+            #### arguments will be in $ovalue IFF the option and args were
+            #### separated by an '=' (as per above). If not, then the
+            #### argument(s) are in $1.
+
+            #### [ -z "$ovalue" ] && ovalue=$1 && shift
+
+            #### Error conditions we can check for are:
+
+            #### If $ovalue is empty:
+            ####     [ -z "$ovalue" ] && [func|script]-echo "Missing arg for option $option" && \
+            ####     (return if a func, exit if a script) 1;
+
+            #### If $ovalue has a leading -, that means it's the next option, unless
+            #### you're pathological.
+            ####     [[ "$ovalue" =~ ^- ]] && [func|script]-echo "Missing arg for option $option" && \
+            ####     (return if a func, exit if a script) 1;
+
+            #### If 'foo' can only have one value, assign it. Multiple
+            #### invocations overwrite the one value and if that's an issue,
+            #### then check for -z "$foo" before assignment.
+            ####     declare foo ## above
+            ####     foo="$ovalue"
+
+            #### If 'foo' is allowed to be multivalued, this code assumes that
+            #### we can do both:
+            ####
+            ####     --foo a --foo b
+            ####
+            ####     --foo a,b
+            ####
+            #### and that both can appear on the same command. The following code
+            #### handles all these cases:
+            ####
+            ####     declare -a foo ## above
+            ####     ## Strip any literal quotes used in case the args delim is
+            ####     ## a space and we had to quote the args
+            ####     ovalue=${ovalue#\"*};ovalue=${ovalue%*\"};ovalue=${ovalue#\'*};ovalue=${ovalue%*\'}
+            ####     IFS="$optvaldelim" read -ra ovalues <<< "$ovalue"
+            ####     foo+=("${ovalues[@]}")
+
+            #### What we cannot check for is if $1 is really a script argument
+            #### and not the option argument. If that's a problem, step up to a
+            #### real getopt OR religiously use -- at all option ends.
+            ;;
+
+        #### ... more options ...
+
         --)
             moreopts=0
             ;;
         * )
-            echo "$original is an invalid option. See $0 --help"; exit 1;;
-        esac
-    done
+            [func|script]-echo -- "$original is an invalid option. See $0 --help"
+            [return|exit] if a script) 1
+            ;;
+    esac
+done
+
+#### MIXED_OPTS_ARGS - uncomment:
+#### eval set -- "${ARGS[@]}"
+#### ^ takes the arguments we shifted off and saved and puts them back
+#### into $@
 
 ## Continue on with anything left in "$@"
+
+## The End, to make sure we never eval the usage statement
+[return|exit] 0
+
+## Go grab the usage template the file USAGE

@@ -1,0 +1,11 @@
+scoping_func ()
+{
+echo -n "$1:in scoping func dollarZero $0 vs bashsource ("
+for i in $(seq 1 ${#BASH_SOURCE[@]})
+do
+ii=$((i-1))
+echo -n " [$ii] ${BASH_SOURCE[$ii]}"
+done
+echo ' )'
+}
+export -f scoping_func

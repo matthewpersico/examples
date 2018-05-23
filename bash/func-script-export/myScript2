@@ -1,0 +1,3 @@
+se "in $0"
+fe "in $0"
+myFunc2

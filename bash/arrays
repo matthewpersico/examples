@@ -1,6 +1,7 @@
 declare -a x
-x=($*)
-for i in ${x[*]}
+x=("$@")
+echo $#
+while (($#))
 do
-echo $i
+echo $1;shift
 done

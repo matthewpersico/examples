@@ -1,29 +1,77 @@
 # -*- sh -*-
 
 top_level_var='top_level_var'
-
+# shellcheck disable=SC2120
 func1 ()
 {
+    local indent=$1
+    local func_declared_twice='func_declared_twice, set in func1'
     local func1_var='func1_var'
-    echo "$FUNCNAME: top_level_var='$top_level_var'"
-    echo "$FUNCNAME: func1_var='$func1_var'"
-    echo "$FUNCNAME: ${FUNCNAME[*]} (${#FUNCNAME[@]})"
+    declare declared='func1_declared'
+    local localed='func1_localed'
+    echo "${indent}${FUNCNAME[0]}: top_level_var='$top_level_var'"
+    echo "${indent}${FUNCNAME[0]}: func1_var='$func1_var'"
+    echo "${indent}${FUNCNAME[0]}: func2_var='$func2_var'"
+    echo "${indent}${FUNCNAME[0]}: declared='$declared'"
+    echo "${indent}${FUNCNAME[0]}: localed='$localed'"
+    echo "${indent}${FUNCNAME[0]}: func_declared_twice='$func_declared_twice'"
+    echo "${indent}${FUNCNAME[0]}: ${FUNCNAME[*]} (${#FUNCNAME[@]})"
     local idx=${#FUNCNAME[@]};((idx-=1))
-    echo "$FUNCNAME: Topmost = ${FUNCNAME[$idx]}"
+    echo "${indent}${FUNCNAME[0]}: Topmost ($idx) = ${FUNCNAME[$idx]}"
+    echo "${indent}${FUNCNAME[0]}: Bottommost (0) = ${FUNCNAME[0]}"
 
     top_level_var='changed in func1'
-    func2
+    func2 '    '
+
+    echo "${indent}${FUNCNAME[0]}: top_level_var='$top_level_var'"
+    echo "${indent}${FUNCNAME[0]}: func1_var='$func1_var'"
+    echo "${indent}${FUNCNAME[0]}: func2_var='$func2_var'"
+    echo "${indent}${FUNCNAME[0]}: declared='$declared'"
+    echo "${indent}${FUNCNAME[0]}: localed='$localed'"
+    echo "${indent}${FUNCNAME[0]}: func_declared_twice='$func_declared_twice'"
+    echo "${indent}${FUNCNAME[0]}: ${FUNCNAME[*]} (${#FUNCNAME[@]})"
+    local idx=${#FUNCNAME[@]};((idx-=1))
+    echo "${indent}${FUNCNAME[0]}: Topmost = ${FUNCNAME[$idx]}"
+    echo "${indent}${FUNCNAME[0]}: Bottommost (0) = ${FUNCNAME[0]}"
 }
 
 func2 ()
 {
+    local indent=$1
+    local func_declared_twice='func_declared_twice, set in func2'
     local func2_var='func2_var'
-    echo "$FUNCNAME: top_level_var='$top_level_var'"
-    echo "$FUNCNAME: func1_var='$func1_var'"
-    echo "$FUNCNAME: func2_var='$func2_var'"
-    echo "$FUNCNAME: ${FUNCNAME[*]} (${#FUNCNAME[@]})"
+    func1_var='func1_var changed in func2'
+    echo "${indent}${FUNCNAME[0]}: top_level_var='$top_level_var'"
+    echo "${indent}${FUNCNAME[0]}: func1_var='$func1_var'"
+    echo "${indent}${FUNCNAME[0]}: func2_var='$func2_var'"
+    echo "${indent}${FUNCNAME[0]}: declared='$declared'"
+    echo "${indent}${FUNCNAME[0]}: localed='$localed'"
+    echo "${indent}${FUNCNAME[0]}: func_declared_twice='$func_declared_twice'"
+    echo "${indent}${FUNCNAME[0]}: ${FUNCNAME[*]} (${#FUNCNAME[@]})"
     local idx=${#FUNCNAME[@]};((idx-=1))
-    echo "$FUNCNAME: Topmost = ${FUNCNAME[$idx]}"
+    echo "${indent}${FUNCNAME[0]}: Topmost = ${FUNCNAME[$idx]}"
+    echo "${indent}${FUNCNAME[0]}: Bottommost (0) = ${FUNCNAME[0]}"
 }
 
+
+echo "${indent}script, before func1 call: top_level_var='$top_level_var'"
+echo "${indent}script, before func1 call: func1_var='$func1_var'"
+echo "${indent}script, before func1 call: func2_var='$func2_var'"
+echo "${indent}script, before func1 call: declared='$declared'"
+echo "${indent}script, before func1 call: localed='$localed'"
+echo "${indent}script, before func1 call: func_declared_twice='$func_declared_twice'"
+echo
+
+# shellcheck disable=SC2119
 func1
+echo
+
+func2
+echo
+
+echo "${indent}script, after func1 call: top_level_var='$top_level_var'"
+echo "${indent}script, after func1 call: func1_var='$func1_var'"
+echo "${indent}script, after func1 call: func2_var='$func2_var'"
+echo "${indent}script, after func1 call: declared='$declared'"
+echo "${indent}script, after func1 call: localed='$localed'"
+echo "${indent}script, after func1 call: func_declared_twice='$func_declared_twice'"

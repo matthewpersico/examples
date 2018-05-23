@@ -20,3 +20,73 @@ for my $v (1, '6', undef) {
     print "return_with_warn = '$return_with_warn'\n";
     print "return_ok = $return_ok\n\n";
 }
+
+my %hash;
+
+my $test=1;
+
+print "string tests...\n";
+$hash{log_message} ||= '||= this message, did not exist';
+print $test++, " - $hash{log_message}\n";
+delete $hash{log_message};
+
+$hash{log_message} //= '//= this message, did not exist';
+print $test++, " - $hash{log_message}\n";
+delete $hash{log_message};
+
+$hash{log_message} = undef;
+$hash{log_message} ||= '||= this message, was undef';
+print $test++, " - $hash{log_message}\n";
+
+$hash{log_message} = undef;
+$hash{log_message} //= '//= this message, was undef';
+print $test++, " - $hash{log_message}\n";
+
+$hash{log_message} = '';
+$hash{log_message} ||= '||= this message, was empty string';
+print $test++, " - $hash{log_message}\n";
+
+$hash{log_message} = '';
+$hash{log_message} //= '||= this message, was empty string';
+print $test++, " - $hash{log_message}\n";
+
+$hash{log_message} = 'already set';
+$hash{log_message} ||= '||= this message, was set';
+print $test++, " - $hash{log_message}\n";
+
+$hash{log_message} = 'already set';
+$hash{log_message} //= '||= this message, was set';
+print $test++, " - $hash{log_message}\n";
+
+print "\narrayref tests...\n";
+$hash{recipients} ||= ['||= this message,', ' did not exist'];
+print $test++, " - @{$hash{recipients}}\n";
+delete $hash{recipients};
+
+$hash{recipients} //= ['//= this message,', ' did not exist'];
+print $test++, " - @{$hash{recipients}}\n";
+delete $hash{recipients};
+
+$hash{recipients} = undef;
+$hash{recipients} ||= ['||= this message,', ' was undef'];
+print $test++, " - @{$hash{recipients}}\n";
+
+$hash{recipients} = undef;
+$hash{recipients} //= ['//= this message,', ' was undef'];
+print $test++, " - @{$hash{recipients}}\n";
+
+$hash{recipients} = [''];
+$hash{recipients} ||= ['||= this message,', ' was empty string'];
+print $test++, " - @{$hash{recipients}}\n";
+
+$hash{recipients} = [''];
+$hash{recipients} //= ['||= this message,', ' was empty string'];
+print $test++, " - @{$hash{recipients}}\n";
+
+$hash{recipients} = ['already set'];
+$hash{recipients} ||= ['||= this message,', ' was set'];
+print $test++, " - @{$hash{recipients}}\n";
+
+$hash{recipients} = ['already set'];
+$hash{recipients} //= ['||= this message,', ' was set'];
+print $test++, " - @{$hash{recipients}}\n";

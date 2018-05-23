@@ -1,0 +1,11 @@
+cmd="/opt/bb/bin/perl ./theProg.pl 4 42"
+
+eval $cmd &
+bgshellpid=$!
+cmdpid=$(pstree $bgshellpid | head -2 | tail -1 | perl -an -F'/\s+/' -e 'print $F[2]')
+echo "The command pid is $cmdpid"
+strace -o ./theTrace -s 512 -ttt -f -p $cmdpid
+echo "Waiting for command.."
+wait $bgshellpid
+last=$?
+echo "Done. Exit was $last"

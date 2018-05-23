@@ -1,0 +1,21 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+
+qx(@ARGV);
+use Config;
+
+my $dq = $?;
+my %vals = (
+    command => "@ARGV",
+    dollar_question_mark => $dq,
+    dqm_binary => sprintf('%b', $dq),
+    program_exit => $dq >> 8,
+    signal => $dq & 127,
+    coredump => ($dq & 128 ? 1 : 0)
+);
+print length("$vals{dqm_binary}");
+use Data::Dumper;
+print Data::Dumper->Dump([\%vals],[qw(*data)]);
+#print Data::Dumper->Dump([\%Config], [qw(*Config)]);

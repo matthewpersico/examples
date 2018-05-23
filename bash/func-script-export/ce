@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+if [ "$1" = "-i" ]
+then
+    [ -z "$CMD_ECHO_AS" ] && CMD_ECHO_AS=${CMD_ECHO_AS:-${0}} && export CMD_ECHO_AS
+else
+    cmd-echo -s "${CMD_ECHO_AS:-$0}" "$@"
+fi

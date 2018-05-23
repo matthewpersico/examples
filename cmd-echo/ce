@@ -1,0 +1,12 @@
+ce ()
+{
+echo "<<<<<<<<<<<<<<<<"
+    echo "ce: f=${FUNCNAME[-1]} s=$0"
+    echo "ce: FUNCNAME=${FUNCNAME[@]} BASH_SOURCE=${BASH_SOURCE[@]}"
+    echo "ce: ECHOAS=$ECHOAS"
+    echo "ce: msg='$@'"
+echo ">>>>>>>>>>>>>>>>"
+echo
+}
+
+export -f ce
