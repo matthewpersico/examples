@@ -1,50 +1,5 @@
 #!/usr/bin/env bash
 
-### The short version:
-
-declare moreopts=1
-declare verbose=0
-while [[ "$1" =~ ^- ]] && ((moreopts))
-do
-    declare original="$1"
-    option=$(dashstripper "$original")
-    shift
-
-    case $option in
-        ## standard options
-        h | help )
-            [func|script]-usage
-            [return|exit] 0
-            ;;
-        debug | x )
-            set -x
-            if a script, trap 'set +x' EXIT
-            ;;
-        verbose | v )
-            #### A yes/no:
-            verbose=1
-            #### If a level, use instead:
-            #### [ -z "$ovalue" ] && ovalue=$1 && shift
-            ###  verbose="$ovalue"
-            ;;
-
-        ## Put your old option case entries in at this point. Sample:
-
-        --)
-            moreopts=0
-            ;;
-        * )
-            [func|script]-echo -- "$original is an invalid option. See $0 --help"
-            [return|exit] if a script) 1
-            ;;
-    esac
-done
-
-## The End, to make sure we never eval the usage statement
-[return|exit] 0
-
-## Go grab the usage template the file USAGE
-
 ################################################################################################
 #### The long version:
 #### A simple way of processing options, using bash regexp extensions. "simple"
@@ -57,6 +12,11 @@ done
 ####   before all arguments, then see each line below with the tag
 ####   "MIXED_OPTS_ARGS".
 
+declare usage_cmd="[func|script]-usage"
+declare echo_cmd="[func|script]-echo"
+## If there's any chance that this will be in a script that will be dotted in,
+## remove the explicit out_cmd calls.
+declare out_cmd="[return|exit]"
 declare optvaldelim='' #### If you are going to allow --foo a,b,c, then optvaldelim=','
 declare moreopts=1
 declare verbose=0
@@ -71,6 +31,7 @@ do
     ## Strip all leading dashes here so that -foo and --foo can both
     ## be processed as 'foo'.
     declare original="$1"
+    shift
 
     ##### If you know you have dashstripper, you can just use it and avoid the
     ##### if else tree.
@@ -81,7 +42,7 @@ do
         declare option
         option=$(dashstripper "$original")
     else
-        declare option="$1"
+        declare option="$original"
         declare new=''
         while [ ! "$new" = "$option" ] && [ ! "$option" = '--' ]
         do
@@ -89,7 +50,6 @@ do
             option=${option##-}
         done
     fi
-    shift
 
     #### MIXED_OPTS_ARGS - uncomment:
     #### if [ "$option" = "$original" ]
@@ -98,10 +58,14 @@ do
     ####    ARGS+=("$1")
     #### fi
     ## This bit deals with --foo=bar instead of --foo bar
-    declare -a ovalues
-    declare okey=${option%%=*}
-    declare ovalue=${option#*=}
-    [ -n "$ovalue" ] && option="$okey"
+    declare okey=''
+    declare ovalue=''
+    if [[ "$option" =~ = ]]
+    then
+        okey=${option%%=*}
+        ovalue=${option#*=}
+        option="$okey"
+    fi
 
     #### NOTE: If you are converting an existing case of options, make sure
     #### that your shifts below are correct with the new logic. In particular,
@@ -112,13 +76,8 @@ do
     case $option in
         ## standard options
         h | help )
-            ;
-            ##[func|script]-usage
-            ##[return|exit] 0
-            ;;
-        debug | x )
-            set -x
-            ##if a script, trap 'set +x' EXIT
+            $usage_cmd
+            $out_cmd 0
             ;;
         verbose | v )
             #### A yes/no:
@@ -174,6 +133,7 @@ do
             ####     ## Strip any literal quotes used in case the args delim is
             ####     ## a space and we had to quote the args
             ####     ovalue=${ovalue#\"*};ovalue=${ovalue%*\"};ovalue=${ovalue#\'*};ovalue=${ovalue%*\'}
+            ####     declare -a ovalues
             ####     IFS="$optvaldelim" read -ra ovalues <<< "$ovalue"
             ####     foo+=("${ovalues[@]}")
 
@@ -188,8 +148,8 @@ do
             moreopts=0
             ;;
         * )
-            [func|script]-echo -- "$original is an invalid option. See $0 --help"
-            [return|exit] if a script) 1
+            $echo_cmd -- "$original is an invalid option. See $0 --help"
+            $out_cmd 1
             ;;
     esac
 done
@@ -202,6 +162,58 @@ done
 ## Continue on with anything left in "$@"
 
 ## The End, to make sure we never eval the usage statement
-[return|exit] 0
+$out_cmd 0
 
 ## Go grab the usage template the file USAGE
+
+
+#### Stuff to pass on options to be handled by something else, like in a git wrapper
+
+
+ l | s | q | n \
+     | no-hardlinks \
+     | bare \
+     | mirror \
+     | no-tags \
+     | dissociate \
+     | *single-branch \
+     | *shallow-submodules
+)
+ ## Options that do not take args
+ git_clone_opts+=("$original")
+ ;;
+
+template \
+    | o \
+    | b \
+    | u \
+    | reference \
+    | separate-git-dir \
+    | depth \
+    | jobs
+)
+ ## Options taking mandatory args. If we don't have one with --foo=bar syntax,
+ ## then we just take the next arg and let real clone sort it out`
+ if [ -n "$ovalue" ]
+ then
+     ovalue="$1"
+     shift
+ fi
+ git_clone_opts+=("$original" "$ovalue")
+ ;;
+
+recurse-submodules )
+    ## Options taking mandatory args. If we don't have one with --foo=bar
+    ## syntax, then we just take the next arg IFF it does not look like an
+    ## option.
+    git_clone_opts+=("$original")
+    if [ -z "$ovalue" ]
+    then
+        if [[ ! "$1" =~ ^- ]]
+        then
+            ovalue="$1"
+            shift
+        fi
+    fi
+    [ -n "$ovalue" ] && git_clone_opts+=("$ovalue")
+    ;;

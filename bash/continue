@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+for i in 1 2 3 4 5 6 7
+do
+    echo
+    echo -n "$i - "
+    for j in a b c d e f
+    do
+        echo -n "$j"
+        if [ "$j" = 'c' ]
+        then
+            continue
+        fi
+        echo -n "|"
+        if [ "$j" = 'd' ]
+        then
+            continue 2
+        fi
+    done
+done

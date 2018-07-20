@@ -1,0 +1,2 @@
+exec echo hi there
+echo bye there

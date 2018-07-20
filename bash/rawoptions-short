@@ -12,10 +12,25 @@ declare verbose=0
 while [[ "$1" =~ ^- ]] && ((moreopts))
 do
     declare original="$1"
-    option=$(dashstripper "$original")
     shift
+    declare option
+    option=$(dashstripper "$original")
+    ## This bit deals with --foo=bar instead of --foo bar
+    declare okey=''
+    declare ovalue=''
+    if [[ "$option" =~ = ]]
+    then
+        okey=${option%%=*}
+        ovalue=${option#*=}
+        option="$okey"
+    fi
 
     case $option in
+
+        #### If your option takes a value, add this to your option. Yes, add it
+        #### to every option that takes a value individually.
+        #### [ -z "$ovalue" ] && ovalue=$1 && shift
+
         ## standard options
         h | help )
             $usage_cmd

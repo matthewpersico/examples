@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 ## Redirects inside a script
 
 ## init the file
@@ -12,7 +13,7 @@ exec 1> >(tee afile)
 ## STDERR to wherever STDOUT is
 exec 2>&1
 
-## STDERR to screen and file preserving 
+## STDERR to screen and file preserving
 ## STDERR as separate so that script
 ## redirects are preserved
 exec 2> >(tee -a afile >&2)
