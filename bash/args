@@ -58,4 +58,12 @@ inner ()
 outer $1 $2
 
 echo num args is $#
+echo first arg is ${1}
 echo last arg is ${@: -1}
+value=''
+echo value is "'$value'," '${value:=$1} is ' ${value:=$1}
+echo value is "'$value'," '${value:-$1} is ' ${value:-$1}
+value=157
+echo value is "'$value'," '${value:=$1} is ' ${value:=$1}
+echo value is "'$value'," '${value:-$1} is ' ${value:-$1}
+echo value is "'$value'"

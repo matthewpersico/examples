@@ -1,0 +1,68 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+
+sub return_my_arg {
+    return $_[0];
+}
+
+sub return_after_a_0_call {
+    return_my_arg(0);
+    return;
+}
+
+sub return_after_a_1_call {
+    return_my_arg(1);
+    return;
+}
+
+sub return_after_an_undef_call {
+    return_my_arg(undef);
+    return;
+}
+
+sub after_a_0_call {
+    return_my_arg(0);
+}
+
+sub after_a_1_call {
+    return_my_arg(1);
+}
+
+sub after_an_undef_call {
+    return_my_arg(undef);
+}
+
+my $retval;
+
+$retval = return_after_a_0_call();
+print "retval of return_after_a_0_call is '$retval'\n";
+
+$retval = return_after_a_1_call();
+print "retval of return_after_a_1_call is '$retval'\n";
+
+$retval = return_after_an_undef_call();
+print "retval of return_after_an_undef_call is '$retval'\n";
+
+$retval = after_a_0_call();
+print "retval of after_a_0_call is '$retval'\n";
+
+$retval = after_a_1_call();
+print "retval of after_a_1_call is '$retval'\n";
+
+$retval = after_an_undef_call();
+print "retval of after_an_undef_call is '$retval'\n";
+
+sub foo {
+    my $v = $_[0];
+    if ($v) {
+        return $v;
+    } else {
+        return;
+    }
+}
+
+for ( 0, 1, undef) {
+    print "foo($_) is '" . foo($_) . "'\n";
+}

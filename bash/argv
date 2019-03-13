@@ -1,0 +1,8 @@
+declare -a args
+args=("$@");
+
+while [ -n "${args[0]}" ]
+do
+    read peeled <  <(asplice --removed args 0 1)
+    #echo peeled "$pe| read peeledeled"
+done

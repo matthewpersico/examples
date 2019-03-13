@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+initdirlist
+
+sub_that_cds ()
+{
+    cd $HOME
+    echo Moved to "$(pwd)" in sub_that_cds "(should be $HOME)"
+}
+
+sub_that_dirlists ()
+{
+    cd $HOME
+    echo Moved to "$(pwd)" in sub_that_cds "(should be $HOME)"
+}
+
+echo starting in "$(pwd)" "(should be $HOME/examples/bash)"
+cd /tmp
+echo Moved to "$(pwd)" in main body "(should be /tmp)"
+
+sub_that_cds
+
+echo In "$(pwd)" in main body after sub_that_cds call  "(should be $HOME)"
+
+echo and when we exit you should be back in $HOME/examples/bash

@@ -1,0 +1,8 @@
+#!/usr/bin/bash
+
+ovalue=fart
+
+server=${ovalue:-$1}
+
+echo $server
+

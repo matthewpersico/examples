@@ -1,0 +1,36 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+
+print "$ARGV[0]\n";
+
+sub make_a_closure_1 {
+    return sub {my $arg1=$_[0]; print "arg1=$arg1\n"};
+}
+
+
+sub make_a_closure_2 {
+    return sub {print "\$_[0]=$_[0]\n"};
+}
+
+my $id=6;
+sub make_a_closure_3 {
+    return sub {my $arg1=$id; print "arg1=$arg1\n"};
+}
+
+sub make_a_closure_4 {
+    my $d1= $_[0];
+    return sub {my $arg1=$d1; print "arg1=$arg1\n"};
+}
+
+
+my $c1 = make_a_closure_1(1);
+$c1->(2);
+my $c2 = make_a_closure_2(3);
+$c1->(4);
+$id=12;
+my $c3 = make_a_closure_3(5);
+$c3->(6);
+my $c4 = make_a_closure_4(7);
+$c4->(8);

@@ -1,0 +1,9 @@
+## The salient part is the IFS... line
+
+declare -a values_tmp
+IFS=, read -ra values_tmp <<< "$values_string"
+fi
+for value in "${values_tm[@]}"
+do
+    ## process $value
+done

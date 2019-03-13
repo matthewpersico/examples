@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+declare one
+declare two
+
+one=$1; shift
+two=$1; shift
+
+if [ -n "$one" ]
+then
+    echo eek1
+fi
+
+if [[ -n $one ]]
+then
+    echo eek2
+fi
+
+if [[ -n $one ]] && [[ -n $two ]]
+then
+    echo eek3
+fi
+
+if [[ -n $one && -n $two ]]
+then
+    echo eek4
+fi
+
+if [[ $one = ee* ]]
+then
+    ls -la brack*
+fi
