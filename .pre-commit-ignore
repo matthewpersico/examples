@@ -1,0 +1,5 @@
+# A list of files to ignore in a pre-commit hook
+bash/args
+bash/cdtest
+bash/indirect
+bash/rawoptions-short
