@@ -1,0 +1,29 @@
+Wednesday, May 1, 2019
+MATTHEW PERSICO
+14:19:35 my $obj = new Frobinator arg1,arg2
+
+vs
+
+my $obj = Frobinator->new(arg1,arg2)
+
+Can't recall the name for the former and exact reason it is discouraged.
+14:19:43 Can someone job my memory?
+JEREMY DEVENPORT
+14:22:31 Indirect object syntax, aka 'poetry mode'
+MATTHEW PERSICO
+14:22:36 thanks
+DANIEL RUOSO
+14:22:38 There is a specific declaration of "new" that would cause this to invoke the wrong thing
+14:22:56 I.e.: it could be parsed as a plain subroutine call, rather than a method call
+14:23:07 I don't remember how to trigger it
+MATTHEW PERSICO
+14:23:40 Good enough
+14:23:42 thanks
+JEREMY DEVENPORT
+14:24:01 http://modernperlbooks.com/mt/2009/08/the-problems-with-indirect-object-notation.html
+DANIEL RUOSO
+14:24:42 https://shadow.cat/blog/matt-s-trout/indirect-but-still-fatal/ has the actual example of how it fails
+MATTHEW PERSICO
+14:25:03 Modern perl  - that'
+14:25:08 S what I was looking for
+14:25:11 Thank you both

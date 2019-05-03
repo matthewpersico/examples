@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-system('env', 'FOO=bar', './env.echo');
+system( 'env', 'FOO=bar', './env.echo' );
 
 $ENV{FOO} = q(yomama);
 system('./env.echo');

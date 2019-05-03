@@ -63,6 +63,25 @@ sub foo {
     }
 }
 
-for ( 0, 1, undef) {
+for ( 0, 1, undef ) {
     print "foo($_) is '" . foo($_) . "'\n";
 }
+
+## Parens don't matter.
+sub return_three_items {
+    return 1, 2, 3;
+}
+
+sub return_a_list_of_three_items {
+    return ( 1, 2, 3 );
+}
+
+use Data::Dumper;
+
+$retval = return_three_items();
+print Data::Dumper->Dump( [ ref($retval) ? $retval : \$retval ],
+    [qw(*retval)] ), qq(\n);
+
+$retval = return_a_list_of_three_items();
+print Data::Dumper->Dump( [ ref($retval) ? $retval : \$retval ],
+    [qw(*retval)] ), qq(\n);

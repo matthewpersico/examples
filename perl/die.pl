@@ -6,5 +6,5 @@ use warnings;
 die "foo bar";
 
 END {
-    print "END block executed\n"
+    print "END block executed\n";
 }

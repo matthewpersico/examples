@@ -3,8 +3,7 @@
 use strict;
 use warnings;
 
-
-(my $x = 'qbcdefg') =~ s/cde//;
+( my $x = 'qbcdefg' ) =~ s/cde//;
 
 print $x;
 

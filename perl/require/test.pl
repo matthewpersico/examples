@@ -16,11 +16,8 @@ my $iam = 'test.pl';
 ## so that it is seen by the system() call.
 my $oldp5l = $ENV{PERL5LIB};
 
-$ENV{PERL5LIB} = join(':',
-                      map { rel2abs($_) } @INC);
-$ENV{PERL5LIB} = join(':',
-                      $ENV{PERL5LIB},
-                      $oldp5l) if($oldp5l);
+$ENV{PERL5LIB} = join( ':', map { rel2abs($_) } @INC );
+$ENV{PERL5LIB} = join( ':', $ENV{PERL5LIB}, $oldp5l ) if ($oldp5l);
 
 print "** $iam:\@INC=@INC\n";
 print "** $iam:\$ENV{PERL5LIB}=$ENV{PERL5LIB}\n\n";

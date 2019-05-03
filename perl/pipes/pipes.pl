@@ -2,27 +2,35 @@
 
 use strict;
 use warnings;
-my ($pid, $line, $priorfh);
+my ( $pid, $line, $priorfh );
 
-pipe(FROM_PARENT, TO_CHILD)     or die "pipe: $!";
-pipe(FROM_CHILD,  TO_PARENT)    or die "pipe: $!";
-$priorfh = select(TO_CHILD) ; $| = 1; select($priorfh);  # autoflush
-$priorfh = select(TO_PARENT); $| = 1; select($priorfh);  # autoflush
+pipe( FROM_PARENT, TO_CHILD )  or die "pipe: $!";
+pipe( FROM_CHILD,  TO_PARENT ) or die "pipe: $!";
+$priorfh = select(TO_CHILD);
+$|       = 1;
+select($priorfh);    # autoflush
+$priorfh = select(TO_PARENT);
+$|       = 1;
+select($priorfh);    # autoflush
 
-if ($pid = fork) {
-    close FROM_PARENT; close TO_PARENT;
+if ( $pid = fork ) {
+    close FROM_PARENT;
+    close TO_PARENT;
     print TO_CHILD "Parent Pid $$ is sending this\n";
-    chomp($line = <FROM_CHILD>);
+    chomp( $line = <FROM_CHILD> );
     print "Parent Pid $$ just read this: '$line'\n";
-    close FROM_CHILD; close TO_CHILD;
-    waitpid($pid,0);
+    close FROM_CHILD;
+    close TO_CHILD;
+    waitpid( $pid, 0 );
 } else {
     die "cannot fork: $!" unless defined $pid;
-    close FROM_CHILD; close TO_CHILD;
-    chomp($line = <FROM_PARENT>);
+    close FROM_CHILD;
+    close TO_CHILD;
+    chomp( $line = <FROM_PARENT> );
     print "Child Pid $$ just read this: '$line'\n";
     print TO_PARENT "Child Pid $$ is sending this\n";
-    close FROM_PARENT; close TO_PARENT;
+    close FROM_PARENT;
+    close TO_PARENT;
     exit;
 }
 

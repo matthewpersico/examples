@@ -5,9 +5,9 @@ use warnings;
 
 use Test::More;
 
-my $hr = { x => 1};
+my $hr = { x => 1 };
 
-is (exists $hr->{foo}, undef, 'foo test');
+is( exists $hr->{foo}, undef, 'foo test' );
 
 done_testing();
 1

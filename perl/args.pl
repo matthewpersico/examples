@@ -3,7 +3,6 @@
 use strict;
 use warnings;
 
-
 sub subcopy {
     my $arg1 = $_[0];
     print "arg1 = $arg1->{a}\n";
@@ -17,15 +16,14 @@ sub direct {
     print "arg1 = $_[0]->{a}\n";
 }
 
-
 my $foo = { a => 6 };
 
 print "foo = $foo->{a}\n";
 
-subcopy ($foo);
+subcopy($foo);
 
 print "foo = $foo->{a}\n";
 
-direct ($foo);
+direct($foo);
 
 print "foo = $foo->{a}\n";

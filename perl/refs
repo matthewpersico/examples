@@ -2,11 +2,11 @@
 
 my %h=(1,2,3,4,5,6);
 
-my $h={1,2,3,4,5,6,7,8,9,10};
+my $hr={10,20,30,40,50,60,70,80,90,100};
 
-print "@{$h}{qw(1 5)}\n";
+print "hr 10 and 50 @{$hr}{qw(10 50)}\n";
 
-my $hslice=map{$_, $h->{$_}} qw(1 3 7 );
+my $hslice=map{$_, $hr->{$_}} qw(10 30 70 );
 
 use Data::Dumper;
 
@@ -24,14 +24,13 @@ sub castit {
     }
 }
 
-print "my $t1 = castit() - ";
-my $t1 = castit();
+print "my \$t1 = castit() - ";
+my $t1 = castit(); $t1 = 'shutupchecker';
 
+print "my \@t2 = castit() - ";
+my @t2 = castit(); @t2 = ('shutupchecker');
 
-print "my @t2 = castit() - ";
-my @t2 = castit();
-
-print "my @t3 = map { $_ } @{castit()} - ";
+print "my \@t3 = map { $_ } @{castit()} - ";
 my @t3 = map { $_ } @{castit()};
 
 my $h = { type => 'foo'};
@@ -44,3 +43,26 @@ sub resetit {
 resetit($h);
 
 print "$h->{type} \n";
+
+my %thing = (
+    file => {
+function => {
+entry_id =>[ 7,8,9 ]
+}}
+);
+
+print '$thing{file}->{function}->{entry_id}->[-1]=',
+ $thing{file}->{function}->{entry_id}->[-1],
+ "\n";
+
+my $ref = \$thing{file}->{function}->{entry_id}->[-1];
+
+print '$ref=' . $ref . "\n";
+print '$$ref=' . $$ref . "\n";
+$$ref=4676;
+
+print '$thing{file}->{function}->{entry_id}->[-1]=',
+ $thing{file}->{function}->{entry_id}->[-1],
+ "\n";
+print '$ref=' . $ref . "\n";
+print '$$ref=' . $$ref . "\n";

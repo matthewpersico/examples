@@ -16,7 +16,7 @@ ${proto}-test 1 2 3
 
 var='foobar'
 
-eval ${!var}="$(ls -rt)"
+eval "$var=$(ls -rt)"
 
 echo $foobar
 echo ${!var}

@@ -3,23 +3,23 @@
 use strict;
 use warnings;
 
-if ($ARGV[0] eq 'seek' ) {
+if ( $ARGV[0] eq 'seek' ) {
     my $log_fh = \*main::DATA;
     my $whence = $log_fh->tell();
-    $log_fh->seek($whence + 64,0);
-    print "\n-- 64 --\n",join ("", <$log_fh> );
+    $log_fh->seek( $whence + 64, 0 );
+    print "\n-- 64 --\n", join( "", <$log_fh> );
 
-    $log_fh->seek($whence + 106,0);
-    print "\n-- 106 --\n",join ("", <$log_fh> );
+    $log_fh->seek( $whence + 106, 0 );
+    print "\n-- 106 --\n", join( "", <$log_fh> );
 
-    $log_fh->seek($whence + 64,0);
-    print "\n-- 64 --\n",join ("", <$log_fh> );
+    $log_fh->seek( $whence + 64, 0 );
+    print "\n-- 64 --\n", join( "", <$log_fh> );
 
-    $log_fh->seek($whence + 8,0);
-    print "\n-- 8 --\n",join ("", <$log_fh> );
+    $log_fh->seek( $whence + 8, 0 );
+    print "\n-- 8 --\n", join( "", <$log_fh> );
 
-    $log_fh->seek($whence + 1492,0);
-    print "\n-- 1492 --\n",join ("", <$log_fh> );
+    $log_fh->seek( $whence + 1492, 0 );
+    print "\n-- 1492 --\n", join( "", <$log_fh> );
 
 } else {
     while (<DATA>) {

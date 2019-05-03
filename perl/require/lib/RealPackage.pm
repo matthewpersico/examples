@@ -5,11 +5,14 @@ use warnings;
 
 use Data::Dumper;
 
-my $iam='lib/RealPackage.pm';
+my $iam = 'lib/RealPackage.pm';
 
 sub check {
-    print("This is check() in $iam\n",
-          Data::Dumper->Dump([\%INC], [qw(*INC)]), "\n");
+    print(
+        "This is check() in $iam\n",
+        Data::Dumper->Dump( [ \%INC ], [qw(*INC)] ),
+        "\n"
+    );
     incis();
     return 0;
 }
@@ -25,4 +28,4 @@ sub incis {
     return 0;
 }
 
-5;
+1;

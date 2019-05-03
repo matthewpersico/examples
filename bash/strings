@@ -1,4 +1,5 @@
-# -*- sh -*-
+#!/usr/bin/env bash
+# shellcheck disable=SC2154
 a='123456789'
 b='12345'
 
@@ -14,9 +15,11 @@ fi
 
 arg_repl_test ()
 {
-    echo ${1:-sdfsfds}
+    echo "${1:-sdfsfds}"
 }
 
+
+x=<<EOCOMMENTS
 
 ## fullsrc is a full path to a file under your current dir
 ## this strips off the path up to and including the current dir
@@ -51,3 +54,5 @@ JEREMY DEVENPORT
 12:37:46 Google keyword is "ksh parameter substitution" (it's under "parameter expansion" in the posix shell language reference)
 WAYNE IRONS
 12:38:48 Thanks Jeremy.
+
+EOCOMMENTS

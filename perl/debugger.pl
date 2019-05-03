@@ -9,18 +9,15 @@ sub am_i_debugging {
 
 sub the_debuggers_are {
     return '-d:ptkdb'
-      if(exists $INC{'Devel/ptkdb.pm'});
+      if ( exists $INC{'Devel/ptkdb.pm'} );
     return '-d'
-      if(exists $INC{'perl5db.pl'});
+      if ( exists $INC{'perl5db.pl'} );
     ## Add support for others here.
     return '-d:unknown'
-      if(am_i_debugging());
+      if ( am_i_debugging() );
     return '';
 }
 
-my $d=6;
-print( join("\n",
-            am_i_debugging(),
-            the_debugger_is(),
-            ''));
+my $d = 6;
+print( join( "\n", am_i_debugging(), the_debugger_is(), '' ) );
 my $e = 6;
