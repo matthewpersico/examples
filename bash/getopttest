@@ -1,0 +1,56 @@
+#!/bin/bash
+
+# Read the options and args from command line. Note that the long and short
+# don't have to match up.
+echo "Originally \$1 = [$1], all=$*"
+OPTSARGS=$(getopt -a -o ab:c::h -l ddd,eee:,fff:: -n 'test.sh' -- "$@")
+status=$?
+((status != 0)) && exit $status
+# Reset the command line ($@).
+eval set -- "$OPTSARGS"
+echo "Now \$1 = [$1], all=$*"
+
+# Reprocess the command line, extracting options and their arguments into
+# variables.
+while true ; do
+    case "$1" in
+        -a )
+            OPT_A=1
+            shift ;;
+        -b )
+            OPT_B="$2"
+            shift 2 ;;
+        -c )
+            case "$2" in
+                "") OPT_C='default_value';;
+                *) OPT_C="$2";;
+            esac
+            shift 2 ;;
+        --ddd)
+            OPT_D=1
+            shift ;;
+        --eee)
+            OPT_E="$2"
+            shift 2;;
+        --fff)
+            case "$2" in
+                "") OPT_F='default_value';;
+                *) OPT_F="$2";;
+            esac
+            shift 2 ;;
+        -h|--help)
+            usage
+            exit 0 ;;
+        --) shift ; break ;; ## VITAL!!! Exits the while loop, no more options
+        *) echo "$1 - Whoops something went wrong" ; exit 1;;
+    esac
+done
+
+# do something with the variables -- in this case the lamest possible one :-)
+echo "OPT_A = $OPT_A"
+echo "OPT_B = $OPT_B"
+echo "OPT_C = $OPT_C"
+echo "OPT_D = $OPT_D"
+echo "OPT_E = $OPT_E"
+echo "OPT_F = $OPT_F"
+echo "args left: $*"
