@@ -1,0 +1,95 @@
+#!/bin/bash
+
+# Define the options. ':' suffix for a mandatory value to an option, '::' for
+# an optional one. Note that the long and short don't have to match up.
+declare OPTSARGS
+# Single letter options. No separator.
+declare shortopts=''
+# Word options. Comma separator.
+declare longopts=''
+
+# Process the command line.
+OPTSARGS=$(getopt -a -o "$shortopts" -l "$longopts" -n "$(basename "$0")" -- "$@") ## "${FUNCNAME[0]}" -- "$@") ## in functions
+declare status=$?
+((status != 0)) && exit $status ## return $status ## in functions
+
+# Reset the command line ($@).
+eval set -- "$OPTSARGS"
+
+# Reprocess the command line, extracting options and their arguments into
+# variables.
+while true
+do
+    declare option=$1
+    shift
+    [ "$option" != '--' ] && option=${option##-} && option=${option##-}
+    case "$option" in
+        ## If NOT already using $option and shift
+        ##     change all $1 to $option
+        ##     remove all $1 shifts
+        ##     change all $2 to $1
+        ## else
+        ##     leave $1 refs and shifts alone
+        --) break ;; ## VITAL!!! Exits the while loop, no more options,
+                     ## remaining $*, if any, are args
+        *)
+            cmd-echo -e -- "$option is an invalid option. See $0 --help"
+            exit 1 ## return 1 in functions
+            ;;
+    esac
+done
+
+## In instances where you are amending an existing command, using the above
+## code would require you to specify every option currently provided by said
+## command. In that case, you're better off picking off only the options you
+## expect and passing everything else to the existing command.
+
+## Notice we don't do the
+
+##    option=${option##-} && option=${option##-}
+
+## thing here; this is because if we are not processing an option here, then we
+## are just passing it on, so we do so without alteration.
+
+## --------
+## DO NOT attempt to convert this to a 'getopt' implementation; it would
+## require specifying and handling every existing option in 'cp'
+## and it is just not necessary.
+declare -a pass_on
+declare -a our_opts ## maybe set as the result of our processing to trigger existing options.
+
+while (( $# ))
+do
+    declare arg=$1
+    shift
+    case $arg in
+        --an-opt-we-careaboute )
+            do_something
+            ;;
+        --another-opt-we-careaboute )
+            do_something_else
+            ;;
+        --help | -h )
+            usage '' ## See sammple function below
+            exit 0
+            ;;
+        * )
+            ## Eventually, you call the real command with "${pass_on[@]}"
+            pass_on+=("$arg")
+            ;;
+    esac
+done
+
+"$REALCMD" "${our_opts[@]}" "${pass_on[@]}"
+
+usage ()
+{
+    (
+        [ -n "$*" ] && cmd-echo -- "$@"
+        echo "** Extended actions **"
+        script-usage ## or func-usage
+        echo
+        echo "** Standard actions **"
+        "$REALCMD" --help
+    ) 2>&1 | ${PAGER:-less}
+}
