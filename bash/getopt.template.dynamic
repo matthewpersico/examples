@@ -1,0 +1,94 @@
+#!/bin/bash
+# shellcheck disable=SC2155 #https://github.com/koalaman/shellcheck/wiki/SC2155
+
+j () {
+    local IFS="$1";
+    shift;
+    echo "$*";
+}
+
+# Define the options. ':' suffix for a mandatory value to an option, '::' for
+# an optional one. Note that the long and short don't have to match up.
+declare OPTSARGS
+
+# Loop variable.
+declare opt
+
+declare shortopts
+# NOTE: Need to map short to long such that something like
+#   $shortstringoptscase )
+#    eval \"\$mapshorttolong{$\option}=\$1\"; shift;;
+#
+
+# Declare each option taking a string and set its default, even if the default
+# is ''. Cannot be spaces in the value strings.
+declare option1=default
+declare option2=''
+
+# Put each option in here.
+declare -a longstringopts=( 'option1' 'option2' )
+
+# Dynamic processing.
+declare -a tmp
+for opt in "${longstringopts[@]}"
+do
+    tmp+=("$opt:")
+done
+declare longstringoptsfmt="$(j ',' "${tmp[@]}")"
+declare longstringoptscase="$(j '|' "${longstringopts[@]}")"
+
+# Declare each option NOT a string and set its default, 0 or 1.
+# NOTE: Need to figure out how to specify 'no-'.
+declare option3=0
+declare option4=0
+
+# Put each option in here.
+declare -a longlogicopts=('option3' 'option4')
+
+# Dynamic processing.
+declare longlogicoptsfmt="$(j ',' "${longlogicopts[@]}")"
+declare longlogicoptscase="$(j '|' "${longlogicopts[@]}")"
+
+declare longopts="${longstringoptsfmt[*]},${longlogicoptsfmt[*]}"
+
+# Process the command line.
+OPTSARGS=$(getopt -a -o "$shortopts" -l "$longopts" -n "$(basename "$0")" -- "$@")
+declare optstatus=$?
+((optstatus != 0)) && exit $optstatus # return $status # in functions
+
+# Reset the command line ($@).
+eval set -- "$OPTSARGS"
+
+# Reprocess the command line, extracting options and their arguments into
+# variables.
+while true
+do
+    declare option=$1
+    shift
+    [ "$option" != '--' ] && option=${option##-} && option=${option##-}
+    eval "
+    case \"\$option\" in
+        $longstringoptscase )
+            eval \"\${option}=\$1\"; shift;;
+        $longlogicoptscase )
+            eval \"\${option}=1\";;
+        --) break ;; # VITAL!!! Exits the while loop, no more options,
+                     # remaining $*, if any, are args
+        *)
+            cmd-echo -e -- \"\$option is an invalid option. See \$0 --help\"
+            exit 1 # return 1 in functions
+            ;;
+    esac"
+done
+
+usage ()
+{
+    (
+        [ -n "$*" ] && cmd-echo -- "$@"
+        echo "** Extended actions **"
+        script-usage # or func-usage
+        echo
+        echo "** Standard actions **"
+        "$REALCMD" --help
+    ) 2>&1 | ${PAGER:-less}
+}

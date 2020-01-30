@@ -1,0 +1,15 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+
+if ( -t STDIN ) {
+    print("-t STDIN true\n");
+}
+if ( -t STDOUT ) {
+    print("-t STDOUT true\n");
+}
+if ( -t STDERR ) {
+    print("-t STDERR true\n");
+}
+print("END\n");

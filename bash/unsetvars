@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+echo "no declare, not set i=$i"
+
+j=6
+echo "no declare, but set j=$j"
+
+declare k
+echo "declare, not set k=$k"
+
+declare l
+l=6
+echo "declare, but set l=$l"
+
+set -u
+echo 'set -u'
+
+echo "cannot have no declare, not set ui"
+
+uj=6
+echo "no declare, but set uj=$uj"
+
+declare uk
+echo "cannot have declare, not set uk"
+
+declare ul
+ul=6
+echo "declare, but set ul=$ul"
