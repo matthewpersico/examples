@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+(echo ENV
+env-vo | sort
+echo
+echo SET
+set-vo | sort) > $1
+

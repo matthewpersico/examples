@@ -62,8 +62,11 @@ do
     declare ovalue=''
     if [[ "$option" =~ = ]]
     then
-        okey=${option%%=*}
-        ovalue=${option#*=}
+        okey=${option%%=*}  ## Removes longest string on the right.
+        ovalue=${option#*=} ## Removes shortest string on the left. These
+                            ## asymetric matches Do The Right Thing in the face
+                            ## of an option=value pair where the value itself
+                            ## has an = in it.
         option="$okey"
     fi
 

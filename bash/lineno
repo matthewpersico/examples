@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+funcone () {
+    echo
+    echo in "${FUNCNAME[0]}"
+    echo LINENO: ${LINENO}
+    echo FUNCS: "${FUNCNAME[@]}"
+    echo LINENOS: "${BASH_LINENO[@]}"
+    echo calling functwo
+    functwo
+}
+
+functwo () {
+    echo
+    echo in "${FUNCNAME[0]}"
+    echo LINENO: ${LINENO}
+    echo FUNCS: "${FUNCNAME[@]}"
+    echo LINENOS: "${BASH_LINENO[@]}"
+    echo calling functhree
+    functhree
+}
+
+functhree () {
+    echo
+    echo in "${FUNCNAME[0]}"
+    echo LINENO: ${LINENO}
+    echo FUNCS: "${FUNCNAME[@]}"
+    echo LINENOS: "${BASH_LINENO[@]}"
+}
+
+echo in "${FUNCNAME[0]}"
+echo LINENO: ${LINENO}
+echo FUNCS: "${FUNCNAME[@]}"
+echo LINENOS: "${BASH_LINENO[@]}"
+echo calling funcone
+funcone

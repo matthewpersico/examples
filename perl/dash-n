@@ -1,0 +1,22 @@
+#!/opt/bb/bin/perl -n
+
+use strict;
+use warnings;
+
+my $begin_var='inited at definition';
+print "\$begin_var = '$begin_var' after my\n";
+
+BEGIN {
+    $begin_var = 'inited in begin';
+    print "\$begin_var = '$begin_var' in BEGIN\n";
+}
+
+/change/ && do { $begin_var = 'changed during read';
+                 print "\$begin_var = '$begin_var' in change\n"};
+/^\.$/ && do {exit;};
+## default:
+print "\$begin_var = '$begin_var' in body\n";
+
+END {
+    print "\$begin_var = '$begin_var' in END\n";
+}
