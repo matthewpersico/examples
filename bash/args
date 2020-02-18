@@ -9,43 +9,46 @@ then
 fi
 
 echo
-echo "Dollar star is" $*
+echo "Dollar star is" "$*"
+# shellcheck disable=SC2048 #https://github.com/koalaman/shellcheck/wiki/SC2048
 for i in $*
 do
-    echo arg: $i
+    echo arg: "$i"
 done
 
 echo
-echo "Dollar at is" $@
-for i in $@
+echo "Dollar at is" "$@"
+for i in "$@"
 do
-    echo arg: $i
+    echo arg: "$i"
 done
 
 echo
 echo "Quoted dollar star is $*"
+# shellcheck disable=SC2066 #https://github.com/koalaman/shellcheck/wiki/SC2066
 for i in "$*"
 do
-    echo arg: $i
+    echo arg: "$i"
 done
 
 echo
+# shellcheck disable=SC2145 #https://github.com/koalaman/shellcheck/wiki/SC2145
 echo "Quoted dollar at is $@"
 for i in "$@"
 do
-    echo arg: $i
+    echo arg: "$i"
 done
 
-echo "Dollar 1 is '"$1"'"
-echo "Dollar 2 is '"$2"'"
+echo "Dollar 1 is '$1'"
+echo "Dollar 2 is '$2'"
 
 outer ()
 {
     echo "outer: \$1 = '$1' and \$2 = '$2'"
     echo inner "with two args"
-    inner $1 $2
+    inner "$1" "$2"
     echo inner "with one arg"
-    inner $1
+    inner "$1"
     echo inner "with no args"
     inner
 }
@@ -55,15 +58,27 @@ inner ()
     echo "inner: \$1 = '$1' and \$2 = '$2'"
 }
 
-outer $1 $2
+outer "$1" "$2"
 
 echo num args is $#
-echo first arg is ${1}
-echo last arg is ${@: -1}
+echo first arg is "${1}"
+echo last arg is "${@: -1}"
 value=''
+# shellcheck disable=SC2016 #https://github.com/koalaman/shellcheck/wiki/SC2016
 echo value is "'$value'," '${value:=$1} is ' ${value:=$1}
-echo value is "'$value'," '${value:-$1} is ' ${value:-$1}
 value=157
+# shellcheck disable=SC2016 #https://github.com/koalaman/shellcheck/wiki/SC2016
 echo value is "'$value'," '${value:=$1} is ' ${value:=$1}
-echo value is "'$value'," '${value:-$1} is ' ${value:-$1}
-echo value is "'$value'"
+# shellcheck disable=SC2016 #https://github.com/koalaman/shellcheck/wiki/SC2016
+echo value is "'$value'," '${value:-$1} is ' "${value:-$1}"
+
+if (($# > 2))
+then
+    echo last arg is "${@: -1}"
+    echo next last arg is "${@: -2: 1}"
+    echo the other args are:
+    for i in "${@:1:(($#-2))}"
+    do
+        echo "$i"
+    done
+fi

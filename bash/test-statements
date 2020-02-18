@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+testit ()
+{
+    if [[ "$1" =~ (rp|patt) ]]
+    then
+        echo is a pattern
+    else
+        echo NOT a pattern
+    fi
+}
+
+testit "$@"

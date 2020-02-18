@@ -1,9 +1,17 @@
 # -*- sh -*-
 
+iii=outside
+echo " iii at top=$iii"
+declare diii=outside
+echo "diii at top=$diii"
 top_level_var='top_level_var'
 # shellcheck disable=SC2120
 func1 ()
 {
+    iii=func1
+    echo " iii set in func1=$iii"
+    declare diii=func1
+    echo "diii set in func1=$diii"
     local indent=$1
     local func_declared_twice='func_declared_twice, set in func1'
     local func1_var='func1_var'
@@ -22,6 +30,8 @@ func1 ()
 
     top_level_var='changed in func1'
     func2 '    '
+    echo " iii after func2 in func 1=$iii"
+    echo "diii after func2 in func 1=$diii"
 
     echo "${indent}${FUNCNAME[0]}: top_level_var='$top_level_var'"
     echo "${indent}${FUNCNAME[0]}: func1_var='$func1_var'"
@@ -37,6 +47,10 @@ func1 ()
 
 func2 ()
 {
+    iii=func2
+    echo " iii set in func2=$iii"
+    declare diii=func2
+    echo "diii set in func2=$diii"
     local indent=$1
     local func_declared_twice='func_declared_twice, set in func2'
     local func2_var='func2_var'
@@ -53,6 +67,8 @@ func2 ()
     echo "${indent}${FUNCNAME[0]}: Bottommost (0) = ${FUNCNAME[0]}"
 }
 
+echo " iii after func def=$iii"
+echo "diii after func def=$diii"
 
 echo "${indent}script, before func1 call: top_level_var='$top_level_var'"
 echo "${indent}script, before func1 call: func1_var='$func1_var'"
@@ -65,9 +81,13 @@ echo
 # shellcheck disable=SC2119
 func1
 echo
+echo " iii after func1 call outer=$iii"
+echo "diii after func1 call outer=$diii"
 
 func2
 echo
+echo " iii after func2 call outer=$iii"
+echo "diii after func2 call outer=$diii"
 
 echo "${indent}script, after func1 call: top_level_var='$top_level_var'"
 echo "${indent}script, after func1 call: func1_var='$func1_var'"

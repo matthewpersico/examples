@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+avar='/asd/UIYI/sdfsdf'
+
+echo ${avar^^}
+echo ${avar,,}
+echo ${avar~~}
+echo ${avar}

@@ -12,6 +12,8 @@ sub return_after_a_0_call {
     return;
 }
 
+=for later
+
 sub return_after_a_1_call {
     return_my_arg(1);
     return;
@@ -22,9 +24,13 @@ sub return_after_an_undef_call {
     return;
 }
 
+=cut
+
 sub after_a_0_call {
     return_my_arg(0);
 }
+
+=for later
 
 sub after_a_1_call {
     return_my_arg(1);
@@ -34,25 +40,29 @@ sub after_an_undef_call {
     return_my_arg(undef);
 }
 
+=cut
+
 my $retval;
 
 $retval = return_after_a_0_call();
 print "retval of return_after_a_0_call is '$retval'\n";
 
-$retval = return_after_a_1_call();
-print "retval of return_after_a_1_call is '$retval'\n";
+#$retval = return_after_a_1_call();
+#print "retval of return_after_a_1_call is '$retval'\n";
 
-$retval = return_after_an_undef_call();
-print "retval of return_after_an_undef_call is '$retval'\n";
+#$retval = return_after_an_undef_call();
+#print "retval of return_after_an_undef_call is '$retval'\n";
 
 $retval = after_a_0_call();
 print "retval of after_a_0_call is '$retval'\n";
 
-$retval = after_a_1_call();
-print "retval of after_a_1_call is '$retval'\n";
+#$retval = after_a_1_call();
+#print "retval of after_a_1_call is '$retval'\n";
 
-$retval = after_an_undef_call();
-print "retval of after_an_undef_call is '$retval'\n";
+#$retval = after_an_undef_call();
+#print "retval of after_an_undef_call is '$retval'\n";
+
+=for later
 
 sub foo {
     my $v = $_[0];
@@ -85,3 +95,5 @@ print Data::Dumper->Dump( [ ref($retval) ? $retval : \$retval ],
 $retval = return_a_list_of_three_items();
 print Data::Dumper->Dump( [ ref($retval) ? $retval : \$retval ],
     [qw(*retval)] ), qq(\n);
+
+=cut

@@ -66,3 +66,20 @@ print '$thing{file}->{function}->{entry_id}->[-1]=',
  "\n";
 print '$ref=' . $ref . "\n";
 print '$$ref=' . $$ref . "\n";
+
+
+my %counts = (
+    files => {
+        all => 32,
+        'amd-64' => 15,
+        src => 99,
+    }
+);
+
+use List::Util qw ( sum );
+
+my @keep = grep {!m/src/}keys %{$counts{files}};
+print( "keep = @keep, sum = ", sum @{$counts{files}{grep {!m/src/}
+                                                      keys %{$counts{files}}
+                                                   }
+                                    } );
