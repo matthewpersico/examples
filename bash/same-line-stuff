@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+## In this shell, this echos
+##  whatever$1is !#L:0
+## On the command line, this echos
+##  whatever$1is echo
+echo $1 !#:0
