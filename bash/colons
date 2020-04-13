@@ -1,0 +1,98 @@
+#!/usr/bin/env bash
+
+-lead-dash ()
+{
+    echo "I am ${FUNCNAME[0]}"
+}
+
+:lead-colon()
+{
+    echo "I am ${FUNCNAME[0]}"
+}
+
+_lead-underbar()
+{
+    echo "I am ${FUNCNAME[0]}"
+}
+
+function -lead-dashf
+{
+    echo "I am ${FUNCNAME[0]}"
+}
+
+function :lead-colonf
+{
+    echo "I am ${FUNCNAME[0]}"
+}
+
+function _lead-underbarf
+{
+    echo "I am ${FUNCNAME[0]}"
+}
+
+function a-dashf()
+{
+    echo "I am ${FUNCNAME[0]}"
+}
+
+function a:colonf()
+{
+    echo "I am ${FUNCNAME[0]}"
+}
+
+a-dash ()
+{
+    echo "I am ${FUNCNAME[0]}"
+}
+
+a:colon ()
+{
+    echo "I am ${FUNCNAME[0]}"
+}
+
+3x ()
+{
+    echo "I am ${FUNCNAME[0]}"
+}
+
+function 3xf
+{
+    echo "I am ${FUNCNAME[0]}"
+}
+
+33x ()
+{
+    echo "I am ${FUNCNAME[0]}"
+}
+
+function 33xf
+{
+    echo "I am ${FUNCNAME[0]}"
+}
+
+3- ()
+{
+    echo "I am ${FUNCNAME[0]}"
+}
+
+function 3-f
+{
+    echo "I am ${FUNCNAME[0]}"
+}
+
+-lead-dash
+:lead-colon
+_lead-underbar
+-lead-dashf
+:lead-colonf
+_lead-underbarf
+a-dash
+a:colon
+a-dashf
+a:colonf
+3x
+3xf
+33x
+33xf
+3-
+3-f
