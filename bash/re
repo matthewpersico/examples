@@ -1,3 +1,59 @@
 j=':/a/b/c:'
 re=':/x/y/z:/q/r:/a/b/c:/d/g/we/f/s:'
 if [[ $re =~ $j ]]; then echo in; fi
+
+
+KEVIN P. FLEMING
+10:42:08 anyone up for a Bash scripting challenge? I have some pathnames (always alphanumeric components, no whitespace or special characters other than the '/' separators). all of them have at least 2 components, but some have 3 or 4. when the pathname has 3 or 4 components, i need to extract out the middle component(s) (strip off the first and last component), but when the pathname has 2 components, the result should be an empty string.
+10:42:38 leaving the '/' between the middle components in a 4-component path is fine, as is leaving the leading slash before the second component.
+MATTHEW PERSICO
+10:43:33 Whatever the solution, it starts with a declare -a
+KEVIN P. FLEMING
+10:45:18 i have a solution using an array now, it's three steps (compose the array, slice it, recompose the string)
+10:45:25 but i'm curious if there are better ways
+MATTHEW PERSICO
+10:48:42 I think you're at the best solution. OTTOMH, a shorter solution would eliminate the original assignment and compose on the fly with a conditional a-la Perl, but even in Perl, I couldn't figure out what that would look like.
+YASH CHANDARANA
+10:49:41 I have this: `dirname $(dirname $pathname | rev) | rev`
+10:50:19 But the problem is when pathname has 2 components, like "a/b", it returns a "."
+MATTHEW PERSICO
+10:51:13 a/b/c/d should return b/c, a/b should return a/b, if I understand the problem correctly.
+YASH CHANDARANA
+10:51:37 It says "but when the pathname has 2 components, the result should be an empty string"
+SIMON WATTS
+10:51:43 > echo $X | tr '/' '\n' | head -n -1 | tail -n +2 | tr '\n' '/'
+KEVIN P. FLEMING
+10:52:32 no 'a/b' should return nothing
+10:52:59 Simon: !!!!
+JIM MAHOOD
+10:53:01 are the paths relative, absolute, or a mix?
+KEVIN P. FLEMING
+10:53:06 relative
+10:53:09 no leading slash
+JEREMY DEVENPORT
+10:53:25 [[ $VAR =~ /[^/]*/(.+)/[^/]* ]] && echo ${BASH_REMATCH[1]}
+KEVIN P. FLEMING
+10:53:39 wow
+10:54:12 it's Perl in Bash
+10:55:37 hmm... does not seem to work with a/b/c
+JEREMY DEVENPORT
+10:55:50 I was assuming you wanted absolute paths
+KEVIN P. FLEMING
+10:55:56 ahh
+JEREMY DEVENPORT
+10:55:58 I think you can just remove the leading /
+JIM MAHOOD
+10:56:01 just change that first slash to a ^
+KEVIN P. FLEMING
+10:56:11 bingo
+10:56:37 fabulous. seventeen thousand internet points to Jeremy.
+MATTHEW PERSICO
+Reply to: 10:53:25 JEREMY DEVENPORT: [[ $VAR =~ /[^/]*/(.+)/[^/]* ]] && echo ${BASH_REMATCH[1]}
+13:06:07 Why I didn't think of regular expressions, I do not know. I. Am. Not. Worthy. <bow>
+KEVIN P. FLEMING
+14:02:26 the thought had crossed my mind this morning, but i had no idea how to do regex capture in Bash
+MATTHEW PERSICO
+15:05:13 Neither did I - I just use it to match...
+Reply to: 10:52:32 KEVIN P. FLEMING: no 'a/b' should return nothing
+
+15:06:34 OH! - I would have at least come up with the Perl expression then..
