@@ -2,20 +2,33 @@
 ## Redirects inside a script
 
 ## init the file
+rm -f afile
 >afile
+
+echo "$(date -Ins):1 - stdout should be on screen"
+echo "$(date -Ins):1 - stderr should be in screen" >&2
 
 ## STDOUT to a file only
 exec 1> afile
+echo "$(date -Ins):2 - stdout should be in afile"
+echo "$(date -Ins):2 - stderr should be on screen" >&2
 
 ## STDOUT to screen and a file
-exec 1> >(tee afile)
+exec 1> >(tee -a afile)
+
+echo "$(date -Ins):3 - stdout should be in afile and on screen"
+echo "$(date -Ins):3 - stderr should be on screen" >&2
 
 ## STDERR to wherever STDOUT is
 exec 2>&1
+echo "$(date -Ins):4 - stdout should be in afile and on screen"
+echo "$(date -Ins):4 - stderr should be in afile and on screen" >&2
 
 ## STDERR to screen and file preserving
 ## STDERR as separate so that script
 ## redirects are preserved
 exec 2> >(tee -a afile >&2)
+echo "$(date -Ins):5 - beats me where stdout should be"
+echo "$(date -Ins):5 - beats me where stderr should be" >&2
 
 # http://stackoverflow.com/questions/3173131/redirect-copy-of-stdout-to-log-file-from-within-bash-script-itself

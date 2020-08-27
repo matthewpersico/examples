@@ -1,0 +1,9 @@
+2020-08-07T15:37:50,868565611-04:00:2 - stdout should be in afile
+2020-08-07T15:37:50,873379212-04:00:3 - stdout should be in afile and on screen
+2020-08-07T15:37:50,877581249-04:00:4 - stdout should be in afile and on screen
+2020-08-07T15:37:50,879654622-04:00:4 - stderr should be in afile and on screen
+2020-08-07T15:37:50,881967068-04:00:5 - beats me where stdout should be
+2020-08-07T15:37:50,884094737-04:00:5 - beats me where stderr should be
+ould be
+2020-08-07T15:37:50,884094737-04:00:5 - beats me where stderr should be
+2020-08-07T15:37:50,884094737-04:00:5 - beats me where stderr should be
