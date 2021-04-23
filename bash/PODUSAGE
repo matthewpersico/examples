@@ -2,41 +2,59 @@
 
 usage()
 {
-    printf '%s\n' "$(sed '0,/^__USAGE__$/d' $0)"
+    pod2text "$0" | ${PAGER:cat}
 }
 
-:<<'__USAGE__'
-NAME
+:<<'__PODUSAGE__'
+=head1 NAME
 
 foo - script/command/function that does something
 
-SYNOPSIS
+=head1 SYNOPSIS
 
  foo [--option1] [ --option2 optionarg ] arg1 [arg2 ...] \
      [fee] [dfsdfs] [sfsdfsf]
 
-DESCRIPTION
+=head1 DESCRIPTION
 
 Describe in general terms what foo does.
 
-ARGUMENTS
+=head1 ARGUMENTS
 
-arg
+=over 4
+
+=item arg
 
 Describe what arg does, should be, etc. Add a new =item for each distinct arg.
 
-OPTIONS
+=back
 
---option1
+=head1 OPTIONS
+
+=over 4
+
+=item --option1
 
 Describe what --option1 does.
 
---option2
+=item --option2
 
 Describe what --option2 does. Describe what optionarg does.
 
-* A choice for optionarg
+=over 2
 
-* Another choice for optionarg
+=item *
 
-__USAGE__
+A choice for optionarg
+
+=item *
+
+Another choice for optionarg
+
+=back
+
+=back
+
+=cut
+
+__PODUSAGE__
