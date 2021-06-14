@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+echo dollar 0 is $0
+dirname $0
+realpath $(dirname $0)

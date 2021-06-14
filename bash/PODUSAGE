@@ -5,6 +5,8 @@ usage()
     pod2text "$0" | ${PAGER:cat}
 }
 
+usage
+
 :<<'__PODUSAGE__'
 =head1 NAME
 

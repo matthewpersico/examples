@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+
+declare logfile="${0}.log"
+declare dollar_one='success'
+
+[[ -n "$1" ]] && dollar_one="$1"
+
+case $dollar_one in
+    success)
+        exit 0
+        ;;
+    success-stdout)
+        sleep 1
+echo "$(date) $dollar_one" >> "$logfile"
+        echo "print to stdout, exit 0"
+        exit 0
+        ;;
+    success-stderr)
+        sleep 2
+echo "$(date) $dollar_one" >> "$logfile"
+        echo "print to stderr, exit 0" >&2
+        exit 0
+        ;;
+    success-stdout-stderr)
+        sleep 3
+echo "$(date) $dollar_one" >> "$logfile"
+        echo "print to stdout (and stderr), exit 0"
+        echo "print to stderr (and stdout), exit 0" >&2
+        exit 0
+        ;;
+    failure)
+        sleep 4
+echo "$(date) $dollar_one" >> "$logfile"
+        exit 129
+        ;;
+    failure-stdout)
+        sleep 5
+echo "$(date) $dollar_one" >> "$logfile"
+        echo "print to stdout, exit 128"
+        exit 128
+        ;;
+    failure-stderr)
+        sleep 6
+echo "$(date) $dollar_one" >> "$logfile"
+        echo "print to stderr, exit 127" >&2
+        exit 127
+        ;;
+    failure-stdout-stderr)
+        sleep 7
+echo "$(date) $dollar_one" >> "$logfile"
+        echo "print to stdout (and stderr), exit 126"
+        echo "print to stderr (and stdout), exit 126" >&2
+        exit 126
+        ;;
+    *)
+echo "$(date) $dollar_one" >> "$logfile"
+        echo "'$1' is not understood"
+        exit 5
+        ;;
+esac

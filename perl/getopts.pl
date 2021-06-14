@@ -5,7 +5,7 @@ use warnings;
 
 use Getopt::Long;
 my %opt;
-GetOptions( \%opt, 'f=s', );
+GetOptions( \%opt, 'f=s', 'm=s@');
 
 use Data::Dumper;
 

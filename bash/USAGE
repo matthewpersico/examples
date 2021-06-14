@@ -2,41 +2,40 @@
 
 usage()
 {
-    printf '%s\n' "$(sed '0,/^__USAGE__$/d' $0)"
+    printf '%s\n' "$(sed '0,/^:<<.__USAGE__.$/d' "$0")"
 }
+
+usage
 
 :<<'__USAGE__'
 NAME
 
-foo - script/command/function that does something
+    foo - script/command/function that does something
 
 SYNOPSIS
 
- foo [--option1] [ --option2 optionarg ] arg1 [arg2 ...] \
-     [fee] [dfsdfs] [sfsdfsf]
+    foo [--option1] [ --option2 optionarg ] arg1 [arg2 ...] \
+        [fee] [dfsdfs] [sfsdfsf]
 
 DESCRIPTION
 
-Describe in general terms what foo does.
+    Describe in general terms what foo does.
 
 ARGUMENTS
 
-arg
-
-Describe what arg does, should be, etc. Add a new =item for each distinct arg.
+    arg
+        Describe what arg does, should be, etc. Add a new line for each distinct arg.
 
 OPTIONS
 
---option1
+    --option1
+        Describe what --option1 does.
 
-Describe what --option1 does.
+    --option2
+        Describe what --option2 does. Describe what optionarg does.
 
---option2
+        * A choice for optionarg
 
-Describe what --option2 does. Describe what optionarg does.
-
-* A choice for optionarg
-
-* Another choice for optionarg
+        * Another choice for optionarg
 
 __USAGE__

@@ -120,3 +120,26 @@ echo
 echo "calling returntester_parens"
 returntester_parens
 echo "back from returntester_parens and status=$?"
+
+
+declare loopvarmatch
+
+for loopvarmatch in a b c
+do
+    if [[ $loopvarmatch == 'b' ]]
+    then
+        break
+    fi
+done
+echo "loopvarmatch after loop is '$loopvarmatch' (should be 'b')"
+
+declare loopvarnomatch
+
+for loopvarnomatch in a b c
+do
+    if [[ $loopvarnomatch == '47' ]]
+    then
+        break
+    fi
+done
+echo "loopvarnomatch after loop is '$loopvarnomatch' (should be 'c')"

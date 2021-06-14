@@ -5,11 +5,20 @@ use warnings;
 
 if ( -t STDIN ) {
     print("-t STDIN true\n");
+} else {
+    print("-t STDIN false\n");
 }
+
 if ( -t STDOUT ) {
     print("-t STDOUT true\n");
+} else {
+    print("-t STDOUT false\n");
 }
+
 if ( -t STDERR ) {
     print("-t STDERR true\n");
+} else {
+    print("-t STDERR false\n");
 }
+
 print("END\n");
