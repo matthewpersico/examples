@@ -1,0 +1,5 @@
+#!/usr/env/bin bash
+
+echo "do some stuff"
+
+false

@@ -1,0 +1,16 @@
+#!/usr/bin/env perl
+
+use 5.16.3;
+
+use File::Find;
+
+my $available;
+eval {
+    (my $file = $ARGV[0].'.pm') =~ s|::|/|g;
+    $available = require "$file";
+};
+if($@) {
+    die $@
+} else {
+    say "Loaded $ARGV[0]";
+}

@@ -1,0 +1,6 @@
+#!/usr/bin/ksh93
+
+echo dollar 0 is $0
+dirname $0
+realpath $(dirname $0)/../..
+realpath $0

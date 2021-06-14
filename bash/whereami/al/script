@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+# shellcheck disable=SC1090 #https://github.com/koalaman/shellcheck/wiki/SC1090
+. "$(dirname "$(realpath "$0")")/../be/include"
+
+# shellcheck disable=SC2154 #https://github.com/koalaman/shellcheck/wiki/SC2154
+echo "The password is $password"

@@ -65,7 +65,7 @@ echo first arg is "${1}"
 echo last arg is "${@: -1}"
 value=''
 # shellcheck disable=SC2016 #https://github.com/koalaman/shellcheck/wiki/SC2016
-echo value is "'$value'," '${value:=$1} is ' ${value:=$1}
+echo value is "'$value'," '${value:=$1} is ' "${value:=$1}"
 value=157
 # shellcheck disable=SC2016 #https://github.com/koalaman/shellcheck/wiki/SC2016
 echo value is "'$value'," '${value:=$1} is ' ${value:=$1}
@@ -81,4 +81,13 @@ then
     do
         echo "$i"
     done
+
+    echo now lets pop the last two
+    set -- "${@:1:$#-2}"
+    echo what is left:
+    for i in "$@"
+    do
+        echo "$i"
+    done
+
 fi

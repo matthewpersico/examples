@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+set -x
+option=$1
+case $option in
+    a) option=b
+       ;;
+    b) option=c
+       ;&
+    d) option=g
+       ;;&
+    e) option=f
+       ;;&
+    f) option=g
+       ;;&
+    g) echo "at g"
+       ;;
+esac
+
+case $option in
+    a) option=b
+       ;;
+    b) option=c
+       ;&
+    d) option=g
+       ;&
+    e) option=f
+       ;&
+    f) option=g
+       ;&
+    g) echo "at g"
+       ;;
+esac
