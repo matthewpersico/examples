@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+# namerefs
+myfunc ()
+{
+    echo "In the myfunc call:"
+    declare -n first=$1
+    declare -n second=$2
+    declare -n third=$3
+    declare -n fourth=$4
+
+    # This is probably a fragile hack
+    read -r firstvar < <(set | grep -E '^first=')
+    firstvar=${firstvar#*=}
+    read -r secondvar < <(set | grep -E '^second=')
+    secondvar=${secondvar#*=}
+    read -r thirdvar < <(set | grep -E '^third=')
+    thirdvar=${thirdvar#*=}
+    read -r fourthvar < <(set | grep -E '^fourth=')
+    fourthvar=${fourthvar#*=}
+    echo "input: first arg variable is '$firstvar', input: second arg variable is '$secondvar'"
+    echo "input: third arg variable is '$thirdvar', input: fourth arg variable is '$fourthvar'"
+    echo
+    echo "input: first arg value is '$first', second arg value is '$second'"
+    echo "input: third arg values are '${third[*]}'"
+    echo "input: fourth arg kevs are '${!fourth[*]}', values are '${fourth[*]}'"
+    echo
+    first="hi there"
+    second="bye there"
+    third+=(foo bar baz)
+    fourth+=([haha]=4 [heehee]=87 [hohoho]=santa)
+    echo "output: first arg value is '$first', second arg value is '$second'"
+    echo "output: third arg values are '${third[*]}'"
+    echo "output: fourth arg kevs are '${!fourth[*]}', values are '${fourth[*]}'"
+    echo
+}
+
+declare eek=14
+declare oof=29
+declare -a alist=(a b c)
+declare -A ahash=([x]=1 [y]=2 [z]=3)
+echo "Before the myfunc call:"
+echo "eek='$eek', oof='$oof'"
+set | grep -E '^alist='
+set | grep -E '^ahash='
+echo
+myfunc eek oof alist ahash
+echo "After the myfunc call:"
+echo "eek='$eek', oof='$oof'"
+set | grep -E '^alist='
+set | grep -E '^ahash='

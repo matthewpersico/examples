@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+# https://blog.dnmfarrell.com/post/three-ways-to-get-a-unix-epoch-in-bash/
+
+declare epoch=$EPOCHREALTIME
+[[ -z $EPOCHREALTIME ]] && printf -v epoch "%(%s)T"
+echo "epoch is $epoch, which is $(date -d @$epoch)"

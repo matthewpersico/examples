@@ -30,3 +30,12 @@ if [[ $one = ee* ]]
 then
     ls -la brack*
 fi
+
+declare dateparen
+dateparen=$(date)
+echo "dateparen=$dateparen"
+declare datebrace
+datebrace={date}
+echo "datebrace=$datebrace"
+read -r datebrace < <(date)
+echo "datebrace=$datebrace"

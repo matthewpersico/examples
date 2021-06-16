@@ -1,4 +1,4 @@
-# -*- sh -*-
+#!/usr/bin/bash
 showem ()
 {
 	set | grep -E 'BASH_LINENO|BASH_SOURCE|FUNCNAME' | grep -v set >&2
@@ -10,7 +10,7 @@ set | grep -E 'BASH_LINENO|BASH_SOURCE|FUNCNAME' | grep -v set >&2
 
 guts_func ()
 {
-    echo in guts_func, caller is ${FUNCNAME[1]}
+    echo "in guts_func, caller is ${FUNCNAME[1]}"
     local iam=${FUNCNAME[0]}
     if [ -n "${FUNCNAME[1]}" ] && \
            [ ! "${FUNCNAME[1]}" = 'source' ] && \
@@ -23,9 +23,12 @@ guts_func ()
 
 wrap_func ()
 {
-    local echo
     guts_func
 }
 
 guts_func
 wrap_func
+declare output
+output=$(wrap_func)
+echo "This is the output of wrap_func, but captured:"
+echo "$output"

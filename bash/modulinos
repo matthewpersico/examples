@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+# https://blog.dnmfarrell.com/post/modulinos-in-bash/?fbclid=IwAR0F72pRZOfr7Ec5shXE9ZHPcNe0l9MK4XuvFsBaBxo_GpyD4lbD7O9EAmk
+
+function hello {
+  if [[ -n "$1" ]];then
+    name="$1"
+  else
+    name="World"
+  fi
+  echo "Hello, $name!"
+}
+[[ "${BASH_SOURCE[0]}" == "$0" ]] && hello "$@"
+
+# This checks that the BASH_SOURCE variable (the script name) equals $0 which
+# is the name of the file invoking the code. These values match when the script
+# is invoked like a program: ./hello.bash. But when the script is sourced $0
+# evaluates to /bin/bash.
