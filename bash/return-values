@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+
+func ()
+{
+   return $1
+}
+
+func "$1"
+echo func returned $?
+
+func2()
+{
+    echo "in func2, calling func with $1"
+    ! func "$1" && { false; return; }
+    echo "in func2 because $1 is true"
+}
+func2 "$1"
+echo func2 returned $?
+
+orcheck()
+{
+    echo "orcheck true"
+    true || return $?
+    echo "orcheck false"
+    false || return $?
+    echo "orcheck end"
+
+}
+
+andcheck()
+{
+    echo "andcheck true"
+    true && return $?
+    echo "andcheck false"
+    false && return $?
+    echo "andcheck end"
+
+}
+
+orcheck
+andcheck
+
+fret7 ()
+{
+    return 7
+}
+
+f3 ()
+{
+    echo "in f3"
+    fret7
+    echo "fret7 returns $?"
+    ! fret7 && { false; return; }
+    echo "f3 ok"
+}
+f3
+echo f3 returned $?

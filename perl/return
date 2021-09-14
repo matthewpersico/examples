@@ -2,6 +2,8 @@
 
 use strict;
 use warnings;
+use Carp;
+use Data::Dumper;
 
 sub return_my_arg {
     return $_[0];
@@ -30,6 +32,20 @@ sub after_a_0_call {
     return_my_arg(0);
 }
 
+sub return_after_a_carp {
+    carp "called in return_after_a_carp";
+    return;
+}
+
+sub return_nothing {
+    return;
+}
+
+sub return_undef {
+    return undef;
+}
+
+
 =for later
 
 sub after_a_1_call {
@@ -45,6 +61,7 @@ sub after_an_undef_call {
 my $retval;
 
 $retval = return_after_a_0_call();
+$retval='undef' if not defined($retval);
 print "retval of return_after_a_0_call is '$retval'\n";
 
 #$retval = return_after_a_1_call();
@@ -97,3 +114,23 @@ print Data::Dumper->Dump( [ ref($retval) ? $retval : \$retval ],
     [qw(*retval)] ), qq(\n);
 
 =cut
+
+my $racarp = return_after_a_carp;
+$racarp = 'undef' if not defined $racarp;
+print "Return after a carp call is $racarp\n";
+
+my $r = return_nothing;
+print "Return of nothing, scalar context:\n";
+print Data::Dumper->Dump( [ \$r ], [qw(*r)] );
+
+$r = return_undef;
+print "Return of undef, scalar context:\n";
+print Data::Dumper->Dump( [ \$r ], [qw(*r)] );
+
+my @ra = return_nothing;
+print "Return of nothing, list context:\n";
+print Data::Dumper->Dump( [ \@ra ], [qw(*ra)] );
+
+@ra = return_undef;
+print "Return of undef, list context:\n";
+print Data::Dumper->Dump( [ \@ra ], [qw(*ra)] );

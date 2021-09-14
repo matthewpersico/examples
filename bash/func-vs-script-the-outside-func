@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+# func vs script - the function loaded up in the env.
+
+outside-func ()
+{
+    local id='(o-f)'
+    echo
+    echo -n "This is $id "
+    echo "$@"
+    echo -n "$id BASH_SOURCE"
+    set | grep ^BASH_SOURCE | sed 's/^BASH_SOURCE//'
+    echo -n "$id FUNCNAME"
+    set | grep ^FUNCNAME | sed 's/^FUNCNAME//'
+}
+ safe_func_export outside-func

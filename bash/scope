@@ -143,3 +143,22 @@ do
     fi
 done
 echo "loopvarnomatch after loop is '$loopvarnomatch' (should be 'c')"
+
+function check_order ()
+{
+    local u
+    local uu
+    read -r -d '' u <<EO
+hi
+there
+EO
+    echo u
+    echo uu
+    return
+    read -r -d '' uu <<EO
+bye
+there
+EO
+}
+
+check_order

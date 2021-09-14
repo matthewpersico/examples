@@ -1,0 +1,95 @@
+#!/usr/bin/env bash
+
+##; comments starting with \#\#\; are template comments and should be removed
+##; when instatiating a command. This template is for extending a "scope
+##; action" system, like "git" and its actions. Replace all instances of
+##; the words <scope> with the hardcoded name of the script, which should
+##; correspond to the "command" name; don't try to use `basename`.
+
+##; Note: Because this is a script, any environment changes that take place,
+##; especially 'cd's, will **not** be retained when the script exits.
+
+declare scope='<scope>'
+
+<scope>-main()
+{
+    local action=$1
+
+    if [[ "$action" =~ ^-+h ]]; then
+        bash-usage "$0"
+        return  0
+    fi
+
+    ##; The action should be a function in this script, or an executable in
+    ##; your PATH, in that order. If neither are found, we bail.
+    local action_handler="$scope-$action"
+    if declare -F "$action_handler" >/dev/null 2>&1 \
+           || which "$action_handler" >/dev/null 2>&1 ; then
+        shift ## the $action
+        "$action_handler" "$@"
+    else
+        ## The
+        case $action in
+            * )
+                cmd-echo --ec --id $scope -- "unknown action '$action'"
+                false
+                ;;
+        esac
+    fi
+    return $?
+}
+
+main
+exit $?
+:<<'__PODUSAGE__'
+=head1 NAME
+
+<scope> - what this does
+
+=head1 SYNOPSIS
+
+ <scope> opts and args
+
+=head1 DESCRIPTION
+
+Describe in general terms what foo does.
+
+=head1 ARGUMENTS
+
+=over 4
+
+=item arg
+
+Describe what arg does, should be, etc. Add a new =item for each distinct arg.
+
+=back
+
+=head1 OPTIONS
+
+=over 4
+
+=item --option1
+
+Describe what --option1 does.
+
+=item --option2
+
+Describe what --option2 does. Describe what optionarg does.
+
+=over 2
+
+=item *
+
+A choice for optionarg
+
+=item *
+
+Another choice for optionarg
+
+=back
+
+=back
+
+=cut
+
+__PODUSAGE__

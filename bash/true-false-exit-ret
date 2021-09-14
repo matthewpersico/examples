@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+afunc ()
+{
+    # This is line 5
+    echo before test 1
+    [[ $1 == 'true' ]] && { true; return $?; }   ## Test 1
+    echo between test 1 and 2
+    [[ $1 == 'false' ]] && false && return $?    ## Test 2
+    echo between test 2 and 3
+    set -x
+    [[ $1 == 'false' ]] && false || return $?    ## Test 3
+    set +x
+    echo between test 3 and 4
+    [[ $1 == 'false' ]] && { false; return $?; } ## Test 4
+    echo after test 4
+    return
+}
+
+afunc "$1"
+
+## Use the { X; return $?; } form. The second ';' is required.
+## When $1=='false', test 2 doesn't capture it because `false` returns a logical false that shortcuts the subsequent &&.
+## When $1 is neither true or false, test 3 incorrectly trips because shell logic doesn't short circuit. It doesn't say:
+
+## [[ $1 == 'false' ]] is false, the && can't possibly be true, so I'll short circuit.
+
+## It says:
+
+## [[ $1 == 'false' ]] is false
+## false && false is false
+## false || anything has to evaluate 'anything', which always trips the return.

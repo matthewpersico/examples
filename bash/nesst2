@@ -1,0 +1,27 @@
+#!/opt/bb/bin/bash
+
+die ()
+{
+    echo ${CMD_ECHO_ID:-no id}
+    local lineno func file warn=0
+    # shellcheck disable=SC2034 #https://github.com/koalaman/shellcheck/wiki/SC2034
+    read -r lineno func file < <(caller 0)
+    [[ $func == 'warn' ]] && warn=1
+    echo
+    echo DIE: i am die "$@"
+    echo DIE: caller was "$func"
+    ((warn || DIE_WARN)) && echo return "${DIE_WARN:-1}"
+    echo exit "${DIE_EXIT:-1}"
+}
+
+warn ()
+{
+    die "$@"
+}
+
+warn call 1
+echo $?
+die call 2
+echo $?
+warn call 3
+echo $?

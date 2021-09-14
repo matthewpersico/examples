@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+
+declare variable='Contents of a variable'
+
+func ()
+{
+    echo We are inside a function
+}
+
+cat <<EOUNQUOTED
+
+===
+This is a heredoc with an unquoted marker.
+
+variable is [variable]
+\$variable is [$variable]
+func is [func]
+\$(func) is [$(func)]
+EOUNQUOTED
+
+cat <<'EOSINGLEQUOTED'
+
+===
+This is a heredoc with an single quoted marker.
+
+variable is [variable]
+\$variable is [$variable]
+func is [func]
+\$(func) is [$(func)]
+EOSINGLEQUOTED
+
+cat <<"EODOUBLEQUOTED"
+
+===
+This is a heredoc with an double unquoted marker.
+
+variable is [variable]
+\$variable is [$variable]
+func is [func]
+\$(func) is [$(func)]
+EODOUBLEQUOTED

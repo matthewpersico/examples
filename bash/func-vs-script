@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+
+# func vs script - see if we can figure out a function in a script vs a
+# function loaded up in the env.
+
+inside-func ()
+{
+    local id='(i-f)'
+    echo
+    echo -n "This is $id "
+    echo "$@"
+    echo -n "$id BASH_SOURCE"
+    set | grep ^BASH_SOURCE | sed 's/^BASH_SOURCE//'
+    echo -n "$id FUNCNAME"
+    set | grep ^FUNCNAME | sed 's/^FUNCNAME//'
+}
+
+wrapper-func ()
+{
+    local id='(w-f)'
+    echo
+    echo -n "This is $id "
+    echo "$@"
+    echo -n "$id BASH_SOURCE"
+    set | grep ^BASH_SOURCE | sed 's/^BASH_SOURCE//'
+    echo -n "$id FUNCNAME"
+    set | grep ^FUNCNAME | sed 's/^FUNCNAME//'
+    outside-func "Called from w-f"
+    inside-func "Called from w-f"
+
+}
+
+declare id='(m-c)'
+echo
+echo -n "This is $id "
+echo "$@"
+echo -n "$id BASH_SOURCE"
+set | grep ^BASH_SOURCE | sed 's/^BASH_SOURCE//'
+echo -n "$id FUNCNAME"
+set | grep ^FUNCNAME | sed 's/^FUNCNAME//'
+
+outside-func "Called from m-c"
+inside-func "Called from m-c"
+wrapper-func "Called from m-c"
+
+declare capture
+capture=$(outside-func "Called from m-c, output captured")
+echo "$capture"
+capture=$(inside-func "Called from m-c, output captured")
+echo "$capture"
+capture=$(wrapper-func "Called from m-c, output captured")
+echo "$capture"

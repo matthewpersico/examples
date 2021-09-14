@@ -1,5 +1,7 @@
 #!/usr/bin/env perl
 
+use strict;
+use warnings;
 use 5.16.3;
 
 open my $oh, '>', $ARGV[0] or die "Cannot open $ARGV[0] for write: $!\n";

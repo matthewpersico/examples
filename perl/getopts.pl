@@ -4,8 +4,8 @@ use strict;
 use warnings;
 
 use Getopt::Long;
-my %opt;
-GetOptions( \%opt, 'f=s', 'm=s@');
+my %opt = (doit => 1);
+GetOptions( \%opt, 'f=s', 'm=s@', 'doit|do-it!');
 
 use Data::Dumper;
 

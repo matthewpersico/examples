@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 set -x
-[ "${FLOCKER}" != "$0" ] && exec env FLOCKER="$0" flock -en "$0" "$0" "$@"
+# [ "${FLOCKER}" != "$0" ] && exec env FLOCKER="$0" flock -en "$0" "$0" "$@"
+if [ "${FLOCKER}" != "$0" ]; then
+    exec env FLOCKER="$0" flock -en "$0" "$0" "$@" || { echo "Cannot lock"; exit 1; }
+    echo "Didn't exec"
+    exit 1
+fi
+
 echo I am $0 $$ and I am sleeping for 10 seconds
 sleep 10
