@@ -1,0 +1,38 @@
+# shellcheck shell=bash
+eek ()  {
+    echo eek
+}
+
+exp_eek () {
+    echo exp_eek
+}
+safe_func_export exp_eek
+
+echo ---------------------
+echo pid is $$ in parent
+echo shell is "$SHELL" in parent
+echo bash is "$BASH" in parent
+
+echo ---------------------
+echo running child_same_shebang in subproc
+./child_same_shebang $$
+
+echo ---------------------
+echo sourcing child_same_shebang in this proc
+. ./child_same_shebang $$
+
+echo ---------------------
+echo running child_different_shebang in subproc
+./child_different_shebang $$
+
+echo ---------------------
+echo sourcing child_different_shebang in this proc
+. ./child_different_shebang $$
+
+echo ---------------------
+echo running child_no_shebang in subproc
+./child_no_shebang $$
+
+echo ---------------------
+echo sourcing child_no_shebang in this proc
+. ./child_no_shebang $$

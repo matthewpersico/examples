@@ -1,0 +1,15 @@
+#!/opt/bb/bin/bash
+
+echo "I am $0"
+echo "My shell is $SHELL"
+echo "My bash is $BASH"
+echo "I was called in pid $1"
+echo -n "My pid is $$, ppid is $PPID, therefore "
+if [ "$1" = "$$" ]; then
+    echo "I am executing in the same process as my caller"
+elif [ "$1" = "$PPID" ]; then
+    echo "I am executing in a sub(child)process of my caller."
+fi
+
+#type eek && eek || echo eek is not defined as a function
+#type exp_eek && exp_eek || echo exp_eek is not defined as a function
