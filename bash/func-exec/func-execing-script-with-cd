@@ -1,0 +1,6 @@
+# -*- sh -*-
+# shellcheck shell=bash
+
+func-execing-script-with-cd () {
+    exec "$HOME/examples/bash/func-exec/script-with-cd"
+}

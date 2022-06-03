@@ -1,0 +1,5 @@
+# -*- sh -*-
+# shellcheck shell=bash
+
+echo "$0"
+env | grep sourcing_id

@@ -1,0 +1,19 @@
+#!/usr/bin/env perl
+
+use 5.16.3;
+use warnings;
+
+sub outer {
+
+    sub inner {
+        say "this is inner";
+    }
+
+    say "this is outer";
+
+}
+
+outer();
+inner();    ## This does not fail with a not found error. It works just
+## fine. Meaning that function nesting does not define. All functions
+## have package scope, regardless of lexical scope of definition.

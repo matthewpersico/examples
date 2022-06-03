@@ -1,0 +1,22 @@
+#!/usr/bin/env perl
+package Globals;
+
+use 5.16.3;
+use warnings;
+
+use Exception::Class (
+    'Globals::InvalidArrayIndexError' => {
+        error =>
+q(Cannot use non-numeric value '$index' as index to global array '$varname'),
+        fields => [ 'varname', 'index' ],
+    }
+);
+
+package main;
+
+if ( $ARGV[0] ) {
+    Globals::InvalidArrayIndexError->throw(
+        varname => 'theVarname',
+        index   => 'bmbf'
+    );
+}

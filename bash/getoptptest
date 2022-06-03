@@ -1,0 +1,71 @@
+# -*- sh -*-
+# shellcheck shell=bash
+
+# Read the options and args from command line. Note that the long and short
+# don't have to match up.
+echo "Originally \$1 = [$1], all=$*"
+declare OPTSARGS
+declare shortopts='ab:c::h'
+declare longopts='ddd,eee:,fff::'
+
+# Process the command line
+OPTSARGS=$(perl -d:ptkdb -S getoptp -a -o "$shortopts" -l "$longopts" -n "$(basename "$0")" -- "$@")
+declare status=$?
+((status != 0)) && exit $status
+
+# Reset the command line ($@).
+eval set -- "$OPTSARGS"
+echo "Now \$1 = [$1], all=$*"
+
+# Reprocess the command line, extracting options and their arguments into
+# variables.
+while true
+do
+    declare option=$1
+    shift
+    [ "$option" != '--' ] && option=${option##-} && option=${option##-}
+    case "$option" in
+        a )
+            OPT_A=1
+            ;;
+        b )
+            OPT_B="$1"
+            shift ;;
+        c )
+            case "$1" in
+                "") OPT_C='default_value';;
+                *) OPT_C="$1";;
+            esac
+            shift ;;
+        ddd)
+            OPT_D=1
+            ;;
+        eee)
+            OPT_E="$1"
+            shift ;;
+        fff)
+            case "$1" in
+                "") OPT_F='default_value';;
+                *) OPT_F="$1";;
+            esac
+            shift ;;
+        h|help)
+            usage
+            exit 0 ;;
+        --) break ;; ## VITAL!!! Exits the while loop, no more options,
+                     ## remaining $*, if any, are args
+        *)
+            cmd-echo -- "$option is an invalid option. See $0 --help"
+            exit 1
+            ;;
+    esac
+done
+
+# do something with the variables -- in this case the lamest possible one :-)
+echo "OPT_A = $OPT_A"
+echo "OPT_B = $OPT_B"
+echo "OPT_C = $OPT_C"
+echo "OPT_D = $OPT_D"
+echo "OPT_E = $OPT_E"
+echo "OPT_F = $OPT_F"
+echo "args left: $*"

@@ -1,4 +1,5 @@
-#!/usr/bin/bash
+# -*- sh -*-
+# shellcheck shell=bash
 
 ovalue=fart
 
@@ -6,3 +7,4 @@ server=${ovalue:-$1}
 
 echo $server
 
+~/personal/foo

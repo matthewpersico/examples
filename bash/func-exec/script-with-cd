@@ -1,0 +1,7 @@
+# -*- sh -*-
+# shellcheck shell=bash
+
+# shellcheck disable=SC2164 #https://github.com/koalaman/shellcheck/wiki/SC2164
+\cd /tmp
+# shellcheck disable=SC2046 #https://github.com/koalaman/shellcheck/wiki/SC2046
+echo in script script-with-cd, in directory $(pwd)

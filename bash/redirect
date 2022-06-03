@@ -1,0 +1,7 @@
+(
+echo this is a parens redirect
+) > redirect.parens
+
+{
+echo this is a braces redirect
+} > redirect.braces

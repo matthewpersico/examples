@@ -1,0 +1,5 @@
+# -*- sh -*-
+# shellcheck shell=bash
+
+echo this is written first to stdout
+echo this is written second to stderr >&2
